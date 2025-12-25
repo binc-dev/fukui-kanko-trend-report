@@ -1,0 +1,1 @@
+# fukui-kanko-trend-report
