@@ -2,9 +2,11 @@
 function App() {
 
   return (
-    <>
-      <p>Hello Vite + React!</p>
-    </>
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <h1 className="text-4xl font-bold text-blue-600 underline">
+        Tailwind CSS v4 works!
+      </h1>
+    </div>
   )
 }
 
