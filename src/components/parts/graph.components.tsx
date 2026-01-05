@@ -31,7 +31,7 @@ export function Graph() {
     <div className="w-full p-4">
       <h2 className="mb-4 text-2xl font-semibold text-center">回数推移</h2>
       <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={data}>
+        <LineChart data={data} margin={{ top: 12, right: 42 }}>
           <CartesianGrid strokeOpacity={0.3}/>
           <XAxis dataKey="date" tick={{ fontSize: 12 }} />
           <YAxis tick={{ fontSize: 12 }} />
