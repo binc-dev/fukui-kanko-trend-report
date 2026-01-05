@@ -3,22 +3,19 @@ import Papa from 'papaparse'
 import { useEffect, useState } from 'react'
 
 type DataPoint = {
-  area: string
   date: string
   map_views: number
-  map_searches: number
+  search_views: number
   directions: number
-  calls: number
+  call_clicks: number
   website_clicks: number
-  post_count: number
-  avg_rating: number
 }
 
 export function Graph() {
   const [data, setData] = useState<DataPoint[]>([])
 
   useEffect(() => {
-    fetch('/data/katuyama.csv')
+    fetch('/data/total_daily_metrics.csv')
     .then(response => response.text())
     .then(csvText => {
         Papa.parse(csvText, {
@@ -42,8 +39,8 @@ export function Graph() {
           <Legend itemSorter={null} />
           <Line type="monotone" dataKey="map_views" name="地図表示" stroke="#1F77B4" strokeWidth={2} />
           <Line type="monotone" dataKey="directions" name="地図検索" stroke="#FF7F0E" strokeWidth={2} />
-          <Line type="monotone" dataKey="map_searches" name="ルート設定" stroke="#2CA02C" strokeWidth={2} />
-          <Line type="monotone" dataKey="calls" name="通話" stroke="#D62728" strokeWidth={2} />
+          <Line type="monotone" dataKey="search_views" name="ルート設定" stroke="#2CA02C" strokeWidth={2} />
+          <Line type="monotone" dataKey="call_clicks" name="通話" stroke="#D62728" strokeWidth={2} />
           <Line type="monotone" dataKey="website_clicks" name="ウェブサイトクリック" stroke="#9467BD" strokeWidth={2} />
         </LineChart>
       </ResponsiveContainer>
