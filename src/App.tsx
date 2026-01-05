@@ -1,11 +1,11 @@
+import { Graph } from "@/components/parts/graph.components";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Graph } from '@/components/parts/graph.components'
+} from "@/components/ui/select";
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
 
       <Graph />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
