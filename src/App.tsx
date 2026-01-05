@@ -40,7 +40,7 @@ function App() {
   }, [])
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white">
+    <div className="flex flex-col min-h-screen items-center justify-center bg-white">
       <Select>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Theme" />
@@ -52,20 +52,20 @@ function App() {
         </SelectContent>
       </Select>
 
-      <div className="w-full max-w-4xl rounded-lg bg-white p-6">
-        <h2 className="mb-4 text-2xl font-semibold">観光トレンド</h2>
+      <div className="w-full p-4">
+        <h2 className="mb-4 text-2xl font-semibold text-center">回数推移</h2>
         <ResponsiveContainer width="100%" height={400}>
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="map_views" name="地図表示" stroke="#8884d8" strokeWidth={2} />
-            <Line type="monotone" dataKey="directions" name="地図検索" stroke="#82ca9d" strokeWidth={2} />
-            <Line type="monotone" dataKey="map_searches" name="ルート設定" stroke="#ffc658" strokeWidth={2} />
-            <Line type="monotone" dataKey="calls" name="通話回数" stroke="#82ca9d" strokeWidth={2} />
-            <Line type="monotone" dataKey="website_clicks" name="ウェブサイトクリック" stroke="#ffc658" strokeWidth={2} />
+            <Tooltip itemSorter={(item) => -(item.value ?? 0)} />
+            <Legend itemSorter={null} />
+            <Line type="monotone" dataKey="map_views" name="地図表示" stroke="#1F77B4" strokeWidth={2} />
+            <Line type="monotone" dataKey="directions" name="地図検索" stroke="#FF7F0E" strokeWidth={2} />
+            <Line type="monotone" dataKey="map_searches" name="ルート設定" stroke="#2CA02C" strokeWidth={2} />
+            <Line type="monotone" dataKey="calls" name="通話" stroke="#D62728" strokeWidth={2} />
+            <Line type="monotone" dataKey="website_clicks" name="ウェブサイトクリック" stroke="#9467BD" strokeWidth={2} />
           </LineChart>
         </ResponsiveContainer>
       </div>
