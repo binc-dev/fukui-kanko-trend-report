@@ -11,9 +11,9 @@ export const getDateInfo = (dateStr: string) => {
   const isSaturday = dayOfWeek === "土";
 
   const color = isWeekendOrHoliday ? "red" : isSaturday ? "blue" : "#666";
-  const formattedDate = `${date.getFullYear()}-${
+  const formattedDate = `${date.getFullYear()}-${String(
     date.getMonth() + 1
-  }-${date.getDate()}`;
+  ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 
   return { formattedDate, displayText, color };
 };
