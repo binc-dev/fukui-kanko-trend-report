@@ -44,6 +44,14 @@ type CustomLegendContentProps = {
   onToggle: (key: string) => void;
 };
 
+type CustomXAxisTickProps = {
+  x?: number;
+  y?: number;
+  payload?: {
+    value: string;
+  };
+};
+
 type CustomTooltipContentProps = {
   active?: boolean;
   payload?: TooltipPayloadItem[];
@@ -112,7 +120,11 @@ const CustomLegendContent = ({
   );
 };
 
-const CustomXAxisTick = ({ x, y, payload }: any) => {
+const CustomXAxisTick = ({ x, y, payload }: CustomXAxisTickProps) => {
+  if (!payload?.value) {
+    return null;
+  }
+
   const date = new Date(payload.value);
   const days = ["日", "月", "火", "水", "木", "金", "土"];
   const dayOfWeek = days[date.getDay()];
