@@ -98,6 +98,30 @@ const CustomLegendContent = ({
   );
 };
 
+const CustomXAxisTick = ({ x, y, payload }: any) => {
+  const date = new Date(payload.value);
+  const days = ["日", "月", "火", "水", "木", "金", "土"];
+  const dayOfWeek = days[date.getDay()];
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text x={0} y={0} dy={16} textAnchor="middle" fill="#666" fontSize={12}>
+        {`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`}
+      </text>
+      <text
+        x={0}
+        y={0}
+        dy={32}
+        textAnchor="middle"
+        fill={dayOfWeek === "土" ? "blue" : dayOfWeek === "日" ? "red" : "#666"}
+        fontSize={10}
+      >
+        {`${dayOfWeek}`}
+      </text>
+    </g>
+  );
+};
+
 export function Graph() {
   const [data, setData] = useState<DataPoint[]>([]);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
@@ -145,7 +169,7 @@ export function Graph() {
       <ResponsiveContainer width="100%" height={400}>
         <LineChart data={data} margin={{ top: 12, right: 42 }}>
           <CartesianGrid strokeOpacity={0.3} />
-          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+          <XAxis dataKey="date" tick={<CustomXAxisTick />} height={60} />
           <YAxis tick={{ fontSize: 12 }} />
           <Tooltip itemSorter={(item) => -(item.value ?? 0)} />
           <Legend
