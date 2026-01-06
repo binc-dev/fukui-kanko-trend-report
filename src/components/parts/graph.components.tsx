@@ -29,15 +29,19 @@ type LegendPayloadItem = {
 type CustomLegendContentProps = {
   payload?: LegendPayloadItem[];
   hoveredKey: string | null;
+  hiddenKeys: Set<string>;
   onHover: (key: string) => void;
   onLeave: () => void;
+  onToggle: (key: string) => void;
 };
 
 const CustomLegendContent = ({
   payload,
   hoveredKey,
+  hiddenKeys,
   onHover,
   onLeave,
+  onToggle,
 }: CustomLegendContentProps) => {
   const desiredOrder = [
     "map_views",
@@ -47,25 +51,40 @@ const CustomLegendContent = ({
     "website_clicks",
   ];
 
+  // payloadをdesiredOrderの順序でソート
   const sortedPayload = payload?.slice().sort((a, b) => {
     const indexA = desiredOrder.indexOf(a.dataKey);
     const indexB = desiredOrder.indexOf(b.dataKey);
     return indexA - indexB;
   });
+
   return (
     <ul className="flex flex-wrap justify-center gap-4 list-none m-0 p-0">
       {sortedPayload?.map((entry, index) => {
         const { dataKey, color, value } = entry;
-        const isActive = !hoveredKey || hoveredKey === dataKey;
-        const opacity = isActive ? 1 : 0.2;
+        const isHidden = hiddenKeys.has(dataKey);
+        const isHovered = hoveredKey === dataKey;
+
+        let opacity = isHidden ? 0.2 : 1;
+        if (hoveredKey && !isHovered && !isHidden) {
+          opacity = 0.2;
+        }
 
         return (
           <li
             key={`item-${index}`}
             className="flex items-center gap-2 cursor-pointer transition-opacity duration-200 ease-in-out"
             style={{ opacity }}
-            onMouseEnter={() => onHover(String(dataKey))}
+            onMouseEnter={() => !isHidden && onHover(String(dataKey))}
             onMouseLeave={() => onLeave()}
+            onClick={() => {
+              const wasHidden = hiddenKeys.has(dataKey);
+              onToggle(String(dataKey));
+              // 再表示時にホバーしていた場合はホバー状態にする
+              if (wasHidden) {
+                onHover(String(dataKey));
+              }
+            }}
           >
             <div
               className="w-3 h-3 rounded-full"
@@ -82,6 +101,7 @@ const CustomLegendContent = ({
 export function Graph() {
   const [data, setData] = useState<DataPoint[]>([]);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
+  const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetch("/data/total_daily_metrics.csv")
@@ -97,6 +117,24 @@ export function Graph() {
       });
   }, []);
 
+  // 凡例の項目を表示・非表示に切り替える関数
+  const toggleKey = (key: string) => {
+    setHiddenKeys((prev) => {
+      const updatedHiddenKeys = new Set(prev);
+      if (updatedHiddenKeys.has(key)) {
+        updatedHiddenKeys.delete(key);
+      } else {
+        updatedHiddenKeys.add(key);
+        // ホバー中の項目が非表示にされた場合、ホバー状態を解除
+        if (hoveredKey === key) {
+          setHoveredKey(null);
+        }
+      }
+      return updatedHiddenKeys;
+    });
+  };
+
+  // ホバー状態に応じた不透明度を取得する関数
   const getOpacity = (dataKey: string) => {
     if (!hoveredKey) return 1;
     return hoveredKey === dataKey ? 1 : 0.2;
@@ -114,8 +152,10 @@ export function Graph() {
             content={
               <CustomLegendContent
                 hoveredKey={hoveredKey}
+                hiddenKeys={hiddenKeys}
                 onHover={setHoveredKey}
                 onLeave={() => setHoveredKey(null)}
+                onToggle={toggleKey}
               />
             }
           />
@@ -126,6 +166,7 @@ export function Graph() {
             stroke="#1F77B4"
             strokeWidth={3}
             strokeOpacity={getOpacity("map_views")}
+            hide={hiddenKeys.has("map_views")}
           />
           <Line
             isAnimationActive={false}
@@ -134,6 +175,7 @@ export function Graph() {
             stroke="#FF7F0E"
             strokeWidth={3}
             strokeOpacity={getOpacity("search_views")}
+            hide={hiddenKeys.has("search_views")}
           />
           <Line
             isAnimationActive={false}
@@ -142,6 +184,7 @@ export function Graph() {
             stroke="#2CA02C"
             strokeWidth={3}
             strokeOpacity={getOpacity("directions")}
+            hide={hiddenKeys.has("directions")}
           />
           <Line
             isAnimationActive={false}
@@ -150,6 +193,7 @@ export function Graph() {
             stroke="#D62728"
             strokeWidth={3}
             strokeOpacity={getOpacity("call_clicks")}
+            hide={hiddenKeys.has("call_clicks")}
           />
           <Line
             isAnimationActive={false}
@@ -158,6 +202,7 @@ export function Graph() {
             stroke="#9467BD"
             strokeWidth={3}
             strokeOpacity={getOpacity("website_clicks")}
+            hide={hiddenKeys.has("website_clicks")}
           />
         </LineChart>
       </ResponsiveContainer>
