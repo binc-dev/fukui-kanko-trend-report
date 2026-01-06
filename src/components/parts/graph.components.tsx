@@ -1,3 +1,4 @@
+import * as holidayJP from "@holiday-jp/holiday_jp";
 import Papa from "papaparse";
 import { useEffect, useState } from "react";
 import {
@@ -103,6 +104,15 @@ const CustomXAxisTick = ({ x, y, payload }: any) => {
   const days = ["日", "月", "火", "水", "木", "金", "土"];
   const dayOfWeek = days[date.getDay()];
 
+  const holiday = holidayJP.between(date, date)[0];
+  const displayText = holiday ? holiday.name : dayOfWeek;
+  const textColor =
+    holiday || dayOfWeek === "日"
+      ? "red"
+      : dayOfWeek === "土"
+      ? "blue"
+      : "#666";
+
   return (
     <g transform={`translate(${x},${y})`}>
       <text x={0} y={0} dy={16} textAnchor="middle" fill="#666" fontSize={12}>
@@ -113,10 +123,10 @@ const CustomXAxisTick = ({ x, y, payload }: any) => {
         y={0}
         dy={32}
         textAnchor="middle"
-        fill={dayOfWeek === "土" ? "blue" : dayOfWeek === "日" ? "red" : "#666"}
+        fill={textColor}
         fontSize={10}
       >
-        {`${dayOfWeek}`}
+        {`${displayText}`}
       </text>
     </g>
   );
