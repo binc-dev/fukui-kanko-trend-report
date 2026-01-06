@@ -82,7 +82,7 @@ const CustomLegendContent = ({
 
   return (
     <ul className="flex flex-wrap justify-center gap-4 list-none m-0 p-0">
-      {sortedPayload?.map((entry, index) => {
+      {sortedPayload?.map((entry) => {
         const { dataKey, color, value } = entry;
         const isHidden = hiddenKeys.has(dataKey);
         const isHovered = hoveredKey === dataKey;
@@ -94,7 +94,7 @@ const CustomLegendContent = ({
 
         return (
           <li
-            key={`item-${index}`}
+            key={dataKey}
             className="flex items-center gap-2 cursor-pointer transition-opacity duration-200 ease-in-out"
             style={{ opacity }}
             onMouseEnter={() => !isHidden && onHover(String(dataKey))}
@@ -151,7 +151,7 @@ const CustomXAxisTick = ({ x, y, payload }: CustomXAxisTickProps) => {
         fill={textColor}
         fontSize={10}
       >
-        {`${displayText}`}
+        {displayText}
       </text>
     </g>
   );
@@ -192,9 +192,9 @@ const CustomTooltipContent = ({
       <div className="grid gap-1.5">
         {payload
           .sort((a, b) => b.value - a.value)
-          .map((item, index) => (
+          .map((item) => (
             <div
-              key={index}
+              key={item.dataKey}
               className="flex items-center justify-between gap-4"
             >
               <div className="flex items-center gap-2">
