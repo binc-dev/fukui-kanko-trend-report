@@ -27,6 +27,14 @@ type LegendPayloadItem = {
   value: string;
 };
 
+type TooltipPayloadItem = {
+  payload: DataPoint;
+  name: string;
+  value: number;
+  color: string;
+  dataKey: string;
+};
+
 type CustomLegendContentProps = {
   payload?: LegendPayloadItem[];
   hoveredKey: string | null;
@@ -34,6 +42,11 @@ type CustomLegendContentProps = {
   onHover: (key: string) => void;
   onLeave: () => void;
   onToggle: (key: string) => void;
+};
+
+type CustomTooltipContentProps = {
+  active?: boolean;
+  payload?: TooltipPayloadItem[];
 };
 
 const CustomLegendContent = ({
@@ -132,6 +145,63 @@ const CustomXAxisTick = ({ x, y, payload }: any) => {
   );
 };
 
+const CustomTooltipContent = ({
+  active,
+  payload,
+}: CustomTooltipContentProps) => {
+  if (!active || !payload || !payload.length) {
+    return null;
+  }
+
+  const date = new Date(payload[0].payload.date);
+  const days = ["日", "月", "火", "水", "木", "金", "土"];
+  const dayOfWeek = days[date.getDay()];
+
+  const holiday = holidayJP.between(date, date)[0];
+  const displayText = holiday ? holiday.name : dayOfWeek;
+  const textColor =
+    holiday || dayOfWeek === "日"
+      ? "red"
+      : dayOfWeek === "土"
+      ? "blue"
+      : "#666";
+
+  return (
+    <div className="grid min-w-32 items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl">
+      <div className="flex">
+        <span>
+          {`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`}
+        </span>
+        <span style={{ color: textColor }} className="ml-2">
+          {displayText}
+        </span>
+      </div>
+
+      <div className="grid gap-1.5">
+        {payload
+          .sort((a, b) => b.value - a.value)
+          .map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between gap-4"
+            >
+              <div className="flex items-center gap-2">
+                <div
+                  className="h-2 w-2 shrink-0 rounded-[2px]"
+                  style={{ backgroundColor: item.color }}
+                />
+                <span className="text-muted-foreground">{`${item.name}:`}</span>
+              </div>
+              <span className="font-mono font-medium tabular-nums text-foreground">
+                {item.value.toLocaleString()}
+              </span>
+            </div>
+          ))}
+      </div>
+    </div>
+  );
+};
+
 export function Graph() {
   const [data, setData] = useState<DataPoint[]>([]);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
@@ -181,7 +251,7 @@ export function Graph() {
           <CartesianGrid strokeOpacity={0.3} />
           <XAxis dataKey="date" tick={<CustomXAxisTick />} height={60} />
           <YAxis tick={{ fontSize: 12 }} />
-          <Tooltip itemSorter={(item) => -(item.value ?? 0)} />
+          <Tooltip content={<CustomTooltipContent />} />
           <Legend
             content={
               <CustomLegendContent
