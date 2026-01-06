@@ -1,4 +1,4 @@
-import { Graph } from "@/components/parts/graph.components";
+import { Graph } from "@/components/parts/graph";
 import {
   Select,
   SelectContent,
