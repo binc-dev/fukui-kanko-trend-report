@@ -104,7 +104,7 @@ export function Graph() {
           <CartesianGrid strokeOpacity={0.3} />
           <XAxis dataKey="date" tick={<CustomXAxisTick />} height={60} />
           <YAxis tick={{ fontSize: 12 }} />
-          <Tooltip content={<CustomTooltipContent />} />
+          <Tooltip content={<CustomTooltipContent chartType="count" />} />
           <Legend
             content={
               <CustomLegendContent
@@ -145,7 +145,14 @@ export function Graph() {
             tick={{ fontSize: 12 }}
             tickCount={5}
           />
-          <Tooltip content={<CustomTooltipContent />} />
+          <Tooltip
+            content={
+              <CustomTooltipContent
+                chartType="review"
+                hiddenKeys={hiddenKeys}
+              />
+            }
+          />
           <Legend
             content={
               <CustomLegendContent

@@ -22,6 +22,8 @@ type TooltipPayloadItem = {
 export type CustomTooltipContentProps = {
   active?: boolean;
   payload?: TooltipPayloadItem[];
+  chartType: "count" | "review";
+  hiddenKeys?: Set<string>;
 };
 
 type LegendPayloadItem = {
