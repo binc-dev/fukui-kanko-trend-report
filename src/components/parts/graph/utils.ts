@@ -1,10 +1,10 @@
-import * as holidayJP from "@holiday-jp/holiday_jp";
+import * as holidayJp from "@holiday-jp/holiday_jp";
 import { DAYS } from "./constants";
 
 export const getDateInfo = (dateStr: string) => {
   const date = new Date(dateStr);
   const dayOfWeek = DAYS[date.getDay()];
-  const holiday = holidayJP.between(date, date)[0];
+  const holiday = holidayJp.between(date, date)[0];
 
   const displayText = holiday ? holiday.name : dayOfWeek;
   const isWeekendOrHoliday = holiday || dayOfWeek === "日";
