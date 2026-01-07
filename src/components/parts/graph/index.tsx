@@ -74,11 +74,19 @@ export function Graph() {
               key={metric.id}
               dataKey={metric.id}
               name={metric.name}
+              fill={metric.color}
               stroke={metric.color}
               strokeWidth={3}
               strokeOpacity={!hoveredKey || hoveredKey === metric.id ? 1 : 0.2}
+              fillOpacity={!hoveredKey || hoveredKey === metric.id ? 1 : 0.2}
               hide={hiddenKeys.has(metric.id)}
               isAnimationActive={false}
+              activeDot={{
+                r: hoveredKey === metric.id ? 2 : 6,
+                stroke: "#fff",
+                strokeWidth: 1,
+                fill: metric.color,
+              }}
             />
           ))}
         </LineChart>
