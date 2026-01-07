@@ -132,7 +132,12 @@ export function Graph() {
           <CartesianGrid strokeOpacity={0.3} />
           <XAxis dataKey="date" tick={<CustomXAxisTick />} height={60} />
           <YAxis yAxisId="left" orientation="left" tick={{ fontSize: 12 }} />
-          <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 12 }} />
+          <YAxis
+            yAxisId="right"
+            orientation="right"
+            domain={[1, 5]}
+            tick={{ fontSize: 12 }}
+          />
           <Tooltip content={<CustomTooltipContent />} />
           <Legend
             content={
