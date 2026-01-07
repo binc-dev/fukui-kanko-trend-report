@@ -88,7 +88,7 @@ export function Graph() {
         回数推移
       </h2>
       <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={data} margin={{ top: 12, right: 42 }}>
+        <LineChart data={data} margin={{ top: 12, right: 60 }}>
           <CartesianGrid strokeOpacity={0.3} />
           <XAxis dataKey="date" tick={<CustomXAxisTick />} height={60} />
           <YAxis tick={{ fontSize: 12 }} />
@@ -113,14 +113,11 @@ export function Graph() {
         レビュー推移
       </h2>
       <ResponsiveContainer width="100%" height={400}>
-        <ComposedChart
-          data={data}
-          margin={{ top: 12, right: 42 }}
-          barCategoryGap="20%"
-        >
+        <ComposedChart data={data} margin={{ top: 12 }} barCategoryGap="20%">
           <CartesianGrid strokeOpacity={0.3} />
           <XAxis dataKey="date" tick={<CustomXAxisTick />} height={60} />
-          <YAxis tick={{ fontSize: 12 }} />
+          <YAxis yAxisId="left" orientation="left" tick={{ fontSize: 12 }} />
+          <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 12 }} />
           <Tooltip content={<CustomTooltipContent />} />
           <Legend
             content={
@@ -136,9 +133,9 @@ export function Graph() {
           {REVIEW_TREND_METRICS.map((metric) => {
             const chartProps = getChartProps(metric);
             return metric.type === "bar" ? (
-              <Bar {...chartProps} />
+              <Bar {...chartProps} yAxisId="left" />
             ) : (
-              <Line {...chartProps} />
+              <Line {...chartProps} yAxisId="right" />
             );
           })}
         </ComposedChart>
