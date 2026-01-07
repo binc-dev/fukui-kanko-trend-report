@@ -41,41 +41,43 @@ export const CustomTooltipContent = ({
         </span>
       </div>
       <div className="grid gap-1.5">
-        {[...payload]
-          .sort((a, b) => b.value - a.value)
-          .map((item) => (
-            <div key={item.dataKey} className="flex flex-col gap-1.5">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                  <div
-                    className="h-2 w-2 shrink-0 rounded-[2px]"
-                    style={{ backgroundColor: item.color }}
-                  />
-                  <span className="text-muted-foreground">{`${item.name}:`}</span>
-                </div>
-                <span className="font-mono font-medium tabular-nums text-foreground">
-                  {item.value.toLocaleString()}
-                </span>
+        {[
+          ...(chartType === "count"
+            ? payload.slice().sort((a, b) => b.value - a.value)
+            : payload),
+        ].map((item) => (
+          <div key={item.dataKey} className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <div
+                  className="h-2 w-2 shrink-0 rounded-[2px]"
+                  style={{ backgroundColor: item.color }}
+                />
+                <span className="text-muted-foreground">{`${item.name}:`}</span>
               </div>
-
-              {chartType === "review" &&
-                item.payload.average_rating === null &&
-                !hiddenKeys?.has("average_rating") && (
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="h-2 w-2 shrink-0 rounded-[2px]"
-                        style={{ backgroundColor: "#FF7F0E" }}
-                      />
-                      <span className="text-muted-foreground">平均評点:</span>
-                    </div>
-                    <span className="font-mono font-medium tabular-nums text-foreground">
-                      評点なし
-                    </span>
-                  </div>
-                )}
+              <span className="font-mono font-medium tabular-nums text-foreground">
+                {item.value.toLocaleString()}
+              </span>
             </div>
-          ))}
+
+            {chartType === "review" &&
+              item.payload.average_rating === null &&
+              !hiddenKeys?.has("average_rating") && (
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="h-2 w-2 shrink-0 rounded-[2px]"
+                      style={{ backgroundColor: "#FF7F0E" }}
+                    />
+                    <span className="text-muted-foreground">平均評点:</span>
+                  </div>
+                  <span className="font-mono font-medium tabular-nums text-foreground">
+                    評点なし
+                  </span>
+                </div>
+              )}
+          </div>
+        ))}
       </div>
     </div>
   );
