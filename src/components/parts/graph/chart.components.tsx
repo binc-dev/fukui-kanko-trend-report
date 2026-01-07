@@ -50,7 +50,11 @@ export const CustomTooltipContent = ({
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-2">
                 <div
-                  className="h-2 w-2 shrink-0 rounded-[2px]"
+                  className={`h-2 w-2 shrink-0 ${
+                    item.dataKey === "review_count_change"
+                      ? "rounded-[2px]"
+                      : "rounded-full"
+                  }`}
                   style={{ backgroundColor: item.color }}
                 />
                 <span className="text-muted-foreground">{`${item.name}:`}</span>
@@ -66,7 +70,7 @@ export const CustomTooltipContent = ({
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
                     <div
-                      className="h-2 w-2 shrink-0 rounded-[2px]"
+                      className="h-2 w-2 shrink-0 rounded-full"
                       style={{ backgroundColor: "#FF7F0E" }}
                     />
                     <span className="text-muted-foreground">平均評点:</span>
@@ -132,7 +136,11 @@ export const CustomLegendContent = ({
             }}
           >
             <div
-              className="w-3 h-3 shrink-0 rounded-[2px]"
+              className={`h-3 w-3 shrink-0 ${
+                entry.dataKey === "review_count_change"
+                  ? "rounded-[2px]"
+                  : "rounded-full"
+              }`}
               style={{ backgroundColor: entry.color }}
             />
             <span className="text-sm">{entry.value}</span>
