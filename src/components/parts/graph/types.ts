@@ -38,3 +38,10 @@ export type CustomLegendContentProps = {
   onLeave: () => void;
   onToggle: (key: string) => void;
 };
+
+export type ChartMetric = {
+  id: string;
+  name: string;
+  color: string;
+  type?: "line" | "bar";
+};
