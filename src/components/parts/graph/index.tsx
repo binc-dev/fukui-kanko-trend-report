@@ -55,7 +55,6 @@ export function Graph() {
 
   const getChartProps = (metric: ChartMetric, hoveredKey: string | null) => {
     const baseProps = {
-      key: metric.id,
       dataKey: metric.id,
       name: metric.name,
       fill: metric.color,
@@ -118,7 +117,7 @@ export function Graph() {
             }
           />
           {COUNT_TREND_METRICS.map((metric) => (
-            <Line {...getChartProps(metric, countHoveredKey)} />
+            <Line key={metric.id} {...getChartProps(metric, countHoveredKey)} />
           ))}
         </LineChart>
       </ResponsiveContainer>
@@ -161,9 +160,14 @@ export function Graph() {
           {REVIEW_TREND_METRICS.map((metric) => {
             const chartProps = getChartProps(metric, reviewHoveredKey);
             return metric.type === "bar" ? (
-              <Bar {...chartProps} yAxisId="left" />
+              <Bar key={metric.id} {...chartProps} yAxisId="left" />
             ) : (
-              <Line connectNulls {...chartProps} yAxisId="right" />
+              <Line
+                key={metric.id}
+                connectNulls
+                {...chartProps}
+                yAxisId="right"
+              />
             );
           })}
         </ComposedChart>
