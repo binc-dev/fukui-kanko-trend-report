@@ -22,7 +22,8 @@ import type { ChartMetric, DataPoint } from "./types";
 
 export function Graph() {
   const [data, setData] = useState<DataPoint[]>([]);
-  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
+  const [countHoveredKey, setCountHoveredKey] = useState<string | null>(null);
+  const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -45,13 +46,14 @@ export function Graph() {
       else {
         updatedHiddenKeys.add(key);
         // ホバー中の項目が非表示にされた場合、ホバー状態を解除
-        if (hoveredKey === key) setHoveredKey(null);
+        if (countHoveredKey === key) setCountHoveredKey(null);
+        if (reviewHoveredKey === key) setReviewHoveredKey(null);
       }
       return updatedHiddenKeys;
     });
   };
 
-  const getChartProps = (metric: ChartMetric) => {
+  const getChartProps = (metric: ChartMetric, hoveredKey: string | null) => {
     const baseProps = {
       key: metric.id,
       dataKey: metric.id,
@@ -107,16 +109,16 @@ export function Graph() {
           <Legend
             content={
               <CustomLegendContent
-                hoveredKey={hoveredKey}
+                hoveredKey={countHoveredKey}
                 hiddenKeys={hiddenKeys}
-                onHover={setHoveredKey}
-                onLeave={() => setHoveredKey(null)}
+                onHover={setCountHoveredKey}
+                onLeave={() => setCountHoveredKey(null)}
                 onToggle={toggleKey}
               />
             }
           />
           {COUNT_TREND_METRICS.map((metric) => (
-            <Line {...getChartProps(metric)} />
+            <Line {...getChartProps(metric, countHoveredKey)} />
           ))}
         </LineChart>
       </ResponsiveContainer>
@@ -142,16 +144,16 @@ export function Graph() {
           <Legend
             content={
               <CustomLegendContent
-                hoveredKey={hoveredKey}
+                hoveredKey={reviewHoveredKey}
                 hiddenKeys={hiddenKeys}
-                onHover={setHoveredKey}
-                onLeave={() => setHoveredKey(null)}
+                onHover={setReviewHoveredKey}
+                onLeave={() => setReviewHoveredKey(null)}
                 onToggle={toggleKey}
               />
             }
           />
           {REVIEW_TREND_METRICS.map((metric) => {
-            const chartProps = getChartProps(metric);
+            const chartProps = getChartProps(metric, reviewHoveredKey);
             return metric.type === "bar" ? (
               <Bar {...chartProps} yAxisId="left" />
             ) : (
