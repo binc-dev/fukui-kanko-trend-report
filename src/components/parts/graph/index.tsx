@@ -82,6 +82,17 @@ export function Graph() {
     };
   };
 
+  const reviewChartData = data.map((entry) => {
+    const updatedEntry: Record<string, string | number | null> = { ...entry };
+
+    REVIEW_TREND_METRICS.forEach((metric) => {
+      if (metric.type === "line" && updatedEntry[metric.id] === 0) {
+        updatedEntry[metric.id] = null;
+      }
+    });
+
+    return updatedEntry;
+  });
   return (
     <div className="w-full p-4">
       <h2 className="w-full h-10 text-xl col-span-2 mt-8 pt-2 border-t-2 border-gray-100 text-center font-bold">
@@ -113,7 +124,11 @@ export function Graph() {
         レビュー推移
       </h2>
       <ResponsiveContainer width="100%" height={400}>
-        <ComposedChart data={data} margin={{ top: 12 }} barCategoryGap="20%">
+        <ComposedChart
+          data={reviewChartData}
+          margin={{ top: 12 }}
+          barCategoryGap="20%"
+        >
           <CartesianGrid strokeOpacity={0.3} />
           <XAxis dataKey="date" tick={<CustomXAxisTick />} height={60} />
           <YAxis yAxisId="left" orientation="left" tick={{ fontSize: 12 }} />
@@ -135,7 +150,7 @@ export function Graph() {
             return metric.type === "bar" ? (
               <Bar {...chartProps} yAxisId="left" />
             ) : (
-              <Line {...chartProps} yAxisId="right" />
+              <Line connectNulls {...chartProps} yAxisId="right" />
             );
           })}
         </ComposedChart>
