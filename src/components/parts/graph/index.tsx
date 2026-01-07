@@ -131,14 +131,20 @@ export function Graph() {
           margin={{ top: 12 }}
           barCategoryGap="20%"
         >
-          <CartesianGrid strokeOpacity={0.3} />
+          <CartesianGrid vertical={false} strokeOpacity={0.3} yAxisId="left" />
           <XAxis dataKey="date" tick={<CustomXAxisTick />} height={60} />
-          <YAxis yAxisId="left" orientation="left" tick={{ fontSize: 12 }} />
+          <YAxis
+            yAxisId="left"
+            orientation="left"
+            tick={{ fontSize: 12 }}
+            tickCount={5}
+          />
           <YAxis
             yAxisId="right"
             orientation="right"
             domain={[1, 5]}
             tick={{ fontSize: 12 }}
+            tickCount={5}
           />
           <Tooltip content={<CustomTooltipContent />} />
           <Legend
