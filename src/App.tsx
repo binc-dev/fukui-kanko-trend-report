@@ -1,4 +1,5 @@
 import { Graph } from "@/components/parts/graph";
+import { Header } from "@/components/parts/header";
 import {
   Select,
   SelectContent,
@@ -9,9 +10,10 @@ import {
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-white">
+    <div className="flex flex-col min-h-screen items-center justify-center w-full p-4">
+      <Header />
       <Select>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-45">
           <SelectValue placeholder="Theme" />
         </SelectTrigger>
         <SelectContent>
