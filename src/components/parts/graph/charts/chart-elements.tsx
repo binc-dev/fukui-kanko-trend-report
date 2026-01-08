@@ -2,8 +2,8 @@ import type {
   CustomLegendContentProps,
   CustomTooltipContentProps,
   CustomXAxisTickProps,
-} from "./types";
-import { getDateInfo } from "./utils";
+} from "../types";
+import { getDateInfo } from "../utils";
 
 export const CustomXAxisTick = ({ x, y, payload }: CustomXAxisTickProps) => {
   if (!payload?.value) return null;
