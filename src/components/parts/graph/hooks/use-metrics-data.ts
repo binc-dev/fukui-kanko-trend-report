@@ -25,7 +25,7 @@ export function useMetricsData() {
         updatedEntry[metric.id] = null;
       }
     });
-    return updatedEntry;
+    return updatedEntry as DataPoint;
   });
 
   return { data, reviewChartData };
