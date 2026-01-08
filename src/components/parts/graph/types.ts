@@ -22,6 +22,8 @@ type TooltipPayloadItem = {
 export type CustomTooltipContentProps = {
   active?: boolean;
   payload?: TooltipPayloadItem[];
+  chartType: "count" | "review";
+  hiddenKeys?: Set<string>;
 };
 
 type LegendPayloadItem = {
@@ -37,4 +39,11 @@ export type CustomLegendContentProps = {
   onHover: (key: string) => void;
   onLeave: () => void;
   onToggle: (key: string) => void;
+};
+
+export type ChartMetric = {
+  id: string;
+  name: string;
+  color: string;
+  type?: "line" | "bar";
 };
