@@ -1,11 +1,14 @@
 import {
+  TOTAL_AREA,
+  type Area,
+} from "@/components/parts/selector/hooks/use-areas";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TOTAL_AREA, type Area } from "@/hooks/useAreas";
 
 interface AreaSelectorProps {
   areas: Area[];

@@ -1,7 +1,7 @@
-import { AreaSelector } from "@/components/parts/area-selector";
 import { Graph } from "@/components/parts/graph";
 import { Header } from "@/components/parts/header";
-import { useAreas } from "@/hooks/useAreas";
+import { AreaSelector } from "@/components/parts/selector/area-selector";
+import { useAreas } from "@/components/parts/selector/hooks/use-areas";
 
 function App() {
   const { areas, selectedArea, setSelectedArea } = useAreas();
