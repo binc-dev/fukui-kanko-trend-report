@@ -14,7 +14,10 @@ export function useAreas() {
   useEffect(() => {
     fetch("/metadata.json")
       .then((res) => res.json())
-      .then((data) => setAreas(data.areas));
+      .then((data) => setAreas(data.areas))
+      .catch((error) => {
+        console.error("エリアメタデータの取得中にエラーが発生しました:", error);
+      });
   }, []);
 
   return {

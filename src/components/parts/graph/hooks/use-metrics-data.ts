@@ -15,6 +15,12 @@ export function useMetricsData(areaFilename: string) {
           dynamicTyping: true,
           complete: (results) => setData(results.data as DataPoint[]),
         });
+      })
+      .catch((error) => {
+        console.error(
+          "CSVデータの取得または解析中にエラーが発生しました:",
+          error
+        );
       });
   }, [areaFilename]);
 
