@@ -3,8 +3,8 @@ import { CountTrendChart } from "./charts/count-trend-chart";
 import { ReviewTrendChart } from "./charts/review-trend-chart";
 import { useMetricsData } from "./hooks/use-metrics-data";
 
-export function Graph() {
-  const { data, reviewChartData } = useMetricsData();
+export function Graph({ selectedArea }: { selectedArea: string }) {
+  const { data, reviewChartData } = useMetricsData(selectedArea);
   const [countHoveredKey, setCountHoveredKey] = useState<string | null>(null);
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());

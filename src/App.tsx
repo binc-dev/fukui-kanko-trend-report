@@ -11,9 +11,11 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [areas, setAreas] = useState<
-    Array<{ area_id: string; area_name: string }>
+    Array<{ area_id: string; area_name: string; filename: string }>
   >([]);
-  const [selectedArea, setSelectedArea] = useState<string>("all");
+  const [selectedArea, setSelectedArea] = useState<string>(
+    "total_daily_metrics.csv"
+  );
 
   useEffect(() => {
     fetch("/metadata.json")
@@ -30,9 +32,9 @@ function App() {
             <SelectValue placeholder="エリアを選択" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">全域</SelectItem>
+            <SelectItem value="total_daily_metrics.csv">全域</SelectItem>
             {areas.map((area) => (
-              <SelectItem key={area.area_id} value={area.area_id}>
+              <SelectItem key={area.area_id} value={area.filename}>
                 {area.area_name}
               </SelectItem>
             ))}
@@ -40,7 +42,7 @@ function App() {
         </Select>
       </div>
 
-      <Graph />
+      <Graph selectedArea={selectedArea} />
     </div>
   );
 }
