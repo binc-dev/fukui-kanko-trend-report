@@ -24,6 +24,7 @@ export function ExternalNavigation() {
               className="flex items-center gap-x-2 underline hover:font-bold"
               href="/"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <DatabaseIcon size="small" />
               データソース
@@ -32,11 +33,16 @@ export function ExternalNavigation() {
               className="flex items-center gap-x-2 underline hover:font-bold"
               href="https://github.com/code4fukui/fukui-kanko-trend-report"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <FileCodeIcon size="small" />
               ページソース
             </a>
-            <a href="https://code4fukui.github.io/" target="_blank">
+            <a
+              href="https://code4fukui.github.io/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <img
                 aria-hidden
                 src="https://code4fukui.github.io/code4fukui_logo.svg"
@@ -58,6 +64,7 @@ export function ExternalNavigation() {
               className="flex items-center gap-x-2 underline hover:font-bold"
               href="/"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <DatabaseIcon size="small" />
               データソース
@@ -66,6 +73,7 @@ export function ExternalNavigation() {
               className="flex items-center gap-x-2 underline hover:font-bold"
               href="https://github.com/code4fukui/fukui-kanko-trend-report"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <FileCodeIcon size="small" />
               ページソース
@@ -89,6 +97,7 @@ export function ExternalNavigation() {
               href="https://code4fukui.github.io/"
               target="_blank"
               className="flex items-center gap-x-2 underline hover:font-bold"
+              rel="noopener noreferrer"
             >
               Code for FUKUI とは
               <LinkExternalIcon size="small" />
