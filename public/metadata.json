@@ -1,0 +1,60 @@
+{
+  "generated_at": "2026-01-01T13:00:00Z",
+  "data_period": {
+    "start": "2025-11-01",
+    "end": "2025-12-31"
+  },
+  "area_count": 3,
+  "location_count": 9,
+  "total_review_count": 1647,
+  "areas": [
+    {
+      "area_id": "area001",
+      "area_name": "勝山市",
+      "location_count": 3,
+      "filename": "area_area001_勝山市_daily_metrics.csv",
+      "rows": 365
+    },
+    {
+      "area_id": "area002",
+      "area_name": "福井市",
+      "location_count": 3,
+      "filename": "area_area002_福井市_daily_metrics.csv",
+      "rows": 365
+    },
+    {
+      "area_id": "area003",
+      "area_name": "あわら市",
+      "location_count": 3,
+      "filename": "area_area003_あわら市_daily_metrics.csv",
+      "rows": 365
+    }
+  ],
+  "files": [
+    {
+      "name": "total_daily_metrics.csv",
+      "rows": 365,
+      "size_bytes": 12800,
+      "description": "全エリア合算の日次データ"
+    },
+    {
+      "name": "area_area001_勝山市_daily_metrics.csv",
+      "rows": 365,
+      "size_bytes": 18800,
+      "description": "勝山市の日次データ"
+    },
+    {
+      "name": "area_area002_福井市_daily_metrics.csv",
+      "rows": 365,
+      "size_bytes": 18800,
+      "description": "福井市の日次データ"
+    },
+    {
+      "name": "area_area003_あわら市_daily_metrics.csv",
+      "rows": 365,
+      "size_bytes": 12000,
+      "description": "あわら市の日次データ"
+    }
+  ],
+  "version": "1.0.0"
+}

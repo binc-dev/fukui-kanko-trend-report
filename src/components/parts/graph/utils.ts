@@ -1,0 +1,19 @@
+import * as holidayJp from "@holiday-jp/holiday_jp";
+import { DAYS } from "./constants";
+
+export const getDateInfo = (dateStr: string) => {
+  const date = new Date(dateStr);
+  const dayOfWeek = DAYS[date.getDay()];
+  const holiday = holidayJp.between(date, date)[0];
+
+  const displayText = holiday ? holiday.name : dayOfWeek;
+  const isWeekendOrHoliday = holiday || dayOfWeek === "日";
+  const isSaturday = dayOfWeek === "土";
+
+  const color = isWeekendOrHoliday ? "red" : isSaturday ? "blue" : "#666";
+  const formattedDate = `${date.getFullYear()}-${String(
+    date.getMonth() + 1
+  ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+  return { formattedDate, displayText, color };
+};

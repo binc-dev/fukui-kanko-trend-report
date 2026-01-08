@@ -1,18 +1,15 @@
+import { Graph } from "@/components/parts/graph";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 function App() {
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-600 underline">
-        Tailwind CSS v4 works!
-      </h1>
+    <div className="flex flex-col min-h-screen items-center justify-center bg-white">
       <Select>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Theme" />
@@ -23,8 +20,10 @@ function App() {
           <SelectItem value="system">System</SelectItem>
         </SelectContent>
       </Select>
+
+      <Graph />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
