@@ -10,6 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import { REVIEW_TREND_METRICS } from "../constants";
+import type { DataPoint } from "../types";
 import { getChartProps } from "../utils";
 import {
   CustomLegendContent,
@@ -24,7 +25,7 @@ export function ReviewTrendChart({
   onHover,
   onToggle,
 }: {
-  data: any[];
+  data: DataPoint[];
   hoveredKey: string | null;
   hiddenKeys: Set<string>;
   onHover: (key: string | null) => void;
