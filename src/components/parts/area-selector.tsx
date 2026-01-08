@@ -1,0 +1,39 @@
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { TOTAL_AREA, type Area } from "@/hooks/useAreas";
+
+interface AreaSelectorProps {
+  areas: Area[];
+  value: string;
+  onValueChange: (value: string) => void;
+}
+
+export function AreaSelector({
+  areas,
+  value,
+  onValueChange,
+}: AreaSelectorProps) {
+  return (
+    <div className="flex flex-row items-center gap-2 mt-3">
+      <p className="text-sm font-medium">エリア</p>
+      <Select value={value} onValueChange={onValueChange}>
+        <SelectTrigger className="w-30 bg-white text-black border-black hover:bg-gray-100">
+          <SelectValue placeholder="エリアを選択" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value={TOTAL_AREA}>全域</SelectItem>
+          {areas.map((area) => (
+            <SelectItem key={area.area_id} value={area.filename}>
+              {area.area_name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
