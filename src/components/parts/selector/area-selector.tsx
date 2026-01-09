@@ -1,6 +1,6 @@
 import {
   TOTAL_AREA,
-  type Area,
+  useAreas,
 } from "@/components/parts/selector/hooks/use-areas";
 import {
   Select,
@@ -9,22 +9,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useChartSettings } from "@/context/ChartSettingsContext";
 
-interface AreaSelectorProps {
-  areas: Area[];
-  value: string;
-  onValueChange: (value: string) => void;
-}
-
-export function AreaSelector({
-  areas,
-  value,
-  onValueChange,
-}: AreaSelectorProps) {
+export function AreaSelector() {
+  const { area, setArea } = useChartSettings();
+  const { areas } = useAreas();
   return (
     <div className="flex flex-row items-center gap-2 mt-3">
       <p className="text-sm font-medium">エリア</p>
-      <Select value={value} onValueChange={onValueChange}>
+      <Select value={area} onValueChange={setArea}>
         <SelectTrigger className="w-30 bg-white text-black border-black hover:bg-gray-100">
           <SelectValue placeholder="エリアを選択" />
         </SelectTrigger>

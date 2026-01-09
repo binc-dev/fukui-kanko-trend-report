@@ -1,24 +1,19 @@
-import type { TimeUnit } from "@/types/types";
+import { useChartSettings } from "@/context/ChartSettingsContext";
 import { useState } from "react";
 import { CountTrendChart } from "./charts/count-trend-chart";
 import { ReviewTrendChart } from "./charts/review-trend-chart";
 import { useMetricsData } from "./hooks/use-metrics-data";
 import { aggregateData } from "./utils";
 
-export function Graph({
-  selectedArea,
-  selectedTimeUnit,
-}: {
-  selectedArea: string;
-  selectedTimeUnit: TimeUnit;
-}) {
-  const { data, reviewChartData } = useMetricsData(selectedArea);
+export function Graph() {
+  const { area, timeUnit } = useChartSettings();
+  const { data, reviewChartData } = useMetricsData(area);
+
   const [countHoveredKey, setCountHoveredKey] = useState<string | null>(null);
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());
 
-  const chartData = aggregateData(data, selectedTimeUnit);
-  console.log("Aggregated Chart Data:", chartData);
+  const chartData = aggregateData(data, timeUnit);
 
   // 凡例の項目を表示・非表示に切り替える関数
   const toggleKey = (key: string) => {
