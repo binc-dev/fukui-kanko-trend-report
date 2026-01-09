@@ -1,6 +1,8 @@
+import type { ChartMetric, DataPoint, TimeUnit } from "@/types/types";
 import * as holidayJp from "@holiday-jp/holiday_jp";
+import { groupBy, mutate, sum, summarize, tidy } from "@tidyjs/tidy";
+import dayjs from "dayjs";
 import { DAYS } from "./constants";
-import type { ChartMetric } from "./types";
 
 export const getDateInfo = (dateStr: string) => {
   const date = new Date(dateStr);
@@ -51,4 +53,31 @@ export const getChartProps = (
       fill: metric.color,
     },
   };
+};
+
+export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
+  if (!data || data.length === 0) return [];
+
+  if (unit === "day" || unit === "week") {
+    return data;
+  }
+
+  return tidy(
+    data,
+    mutate({
+      date: (data) => {
+        const date = dayjs(data.date);
+        return date.format("YYYY-MM");
+      },
+    }),
+    groupBy("date", [
+      summarize({
+        map_views: sum("map_views"),
+        search_views: sum("search_views"),
+        directions: sum("directions"),
+        call_clicks: sum("call_clicks"),
+        website_clicks: sum("website_clicks"),
+      }),
+    ])
+  ).sort((a, b) => a.date.localeCompare(b.date));
 };

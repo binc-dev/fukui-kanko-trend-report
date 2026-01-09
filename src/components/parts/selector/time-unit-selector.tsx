@@ -5,10 +5,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { TimeUnit } from "@/types/types";
 
 interface TimeUnitSelectorProps {
-  value: string;
-  onValueChange: (value: string) => void;
+  value: TimeUnit;
+  onValueChange: (value: TimeUnit) => void;
 }
 
 export function TimeUnitSelector({

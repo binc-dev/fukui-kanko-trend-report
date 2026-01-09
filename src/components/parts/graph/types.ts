@@ -1,7 +1,4 @@
-export type DataPoint = {
-  date: string;
-  [key: string]: string | number;
-};
+import type { DataPoint } from "@/types/types";
 
 export type CustomXAxisTickProps = {
   x?: number;
@@ -39,11 +36,4 @@ export type CustomLegendContentProps = {
   onHover: (key: string) => void;
   onLeave: () => void;
   onToggle: (key: string) => void;
-};
-
-export type ChartMetric = {
-  id: string;
-  name: string;
-  color: string;
-  type?: "line" | "bar";
 };

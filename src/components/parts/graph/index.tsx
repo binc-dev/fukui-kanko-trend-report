@@ -1,13 +1,24 @@
+import type { TimeUnit } from "@/types/types";
 import { useState } from "react";
 import { CountTrendChart } from "./charts/count-trend-chart";
 import { ReviewTrendChart } from "./charts/review-trend-chart";
 import { useMetricsData } from "./hooks/use-metrics-data";
+import { aggregateData } from "./utils";
 
-export function Graph({ selectedArea }: { selectedArea: string }) {
+export function Graph({
+  selectedArea,
+  selectedTimeUnit,
+}: {
+  selectedArea: string;
+  selectedTimeUnit: TimeUnit;
+}) {
   const { data, reviewChartData } = useMetricsData(selectedArea);
   const [countHoveredKey, setCountHoveredKey] = useState<string | null>(null);
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());
+
+  const chartData = aggregateData(data, selectedTimeUnit);
+  console.log("Aggregated Chart Data:", chartData);
 
   // 凡例の項目を表示・非表示に切り替える関数
   const toggleKey = (key: string) => {
@@ -31,7 +42,7 @@ export function Graph({ selectedArea }: { selectedArea: string }) {
         回数推移
       </h2>
       <CountTrendChart
-        data={data}
+        data={chartData}
         hoveredKey={countHoveredKey}
         hiddenKeys={hiddenKeys}
         onHover={setCountHoveredKey}
