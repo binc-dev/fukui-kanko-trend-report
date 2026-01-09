@@ -1,27 +1,22 @@
 import { Graph } from "@/components/parts/graph";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Header } from "@/components/parts/header";
+import { AreaSelector } from "@/components/parts/selector/area-selector";
+import { useAreas } from "@/components/parts/selector/hooks/use-areas";
 
 function App() {
-  return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-white">
-      <Select>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Theme" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="light">Light</SelectItem>
-          <SelectItem value="dark">Dark</SelectItem>
-          <SelectItem value="system">System</SelectItem>
-        </SelectContent>
-      </Select>
+  const { areas, selectedArea, setSelectedArea } = useAreas();
 
-      <Graph />
+  return (
+    <div className="flex flex-col min-h-screen items-center justify-center w-full p-4">
+      <Header />
+
+      <AreaSelector
+        areas={areas}
+        value={selectedArea}
+        onValueChange={setSelectedArea}
+      />
+
+      <Graph selectedArea={selectedArea} />
     </div>
   );
 }

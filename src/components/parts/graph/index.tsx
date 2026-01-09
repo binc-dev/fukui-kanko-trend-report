@@ -3,8 +3,8 @@ import { CountTrendChart } from "./charts/count-trend-chart";
 import { ReviewTrendChart } from "./charts/review-trend-chart";
 import { useMetricsData } from "./hooks/use-metrics-data";
 
-export function Graph() {
-  const { data, reviewChartData } = useMetricsData();
+export function Graph({ selectedArea }: { selectedArea: string }) {
+  const { data, reviewChartData } = useMetricsData(selectedArea);
   const [countHoveredKey, setCountHoveredKey] = useState<string | null>(null);
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());
@@ -26,7 +26,7 @@ export function Graph() {
   };
 
   return (
-    <div className="w-full p-4 flex flex-col gap-12">
+    <div className="w-full flex flex-col gap-12">
       <h2 className="w-full h-10 text-xl col-span-2 mt-8 pt-2 border-t-2 border-gray-100 text-center font-bold">
         回数推移
       </h2>

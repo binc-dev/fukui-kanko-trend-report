@@ -34,7 +34,11 @@ export function ReviewTrendChart({
   return (
     <ResponsiveContainer width="100%" height={400}>
       <ComposedChart data={data} margin={{ top: 12 }} barCategoryGap="20%">
-        <CartesianGrid vertical={false} strokeOpacity={0.3} yAxisId="left" />
+        <CartesianGrid
+          vertical={hiddenKeys.has("review_count_change")}
+          strokeOpacity={0.3}
+          yAxisId={hiddenKeys.has("review_count_change") ? "right" : "left"}
+        />
         <XAxis dataKey="date" tick={<CustomXAxisTick />} height={60} />
         <YAxis
           yAxisId="left"
