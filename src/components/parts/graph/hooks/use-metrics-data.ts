@@ -1,7 +1,7 @@
+import type { DataPoint } from "@/types/types";
 import Papa from "papaparse";
 import { useEffect, useState } from "react";
 import { REVIEW_TREND_METRICS } from "../constants";
-import type { DataPoint } from "../types";
 
 export function useMetricsData(areaFilename: string) {
   const [data, setData] = useState<DataPoint[]>([]);

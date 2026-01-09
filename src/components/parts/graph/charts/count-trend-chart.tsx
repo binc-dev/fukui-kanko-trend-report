@@ -1,3 +1,4 @@
+import type { DataPoint } from "@/types/types";
 import {
   CartesianGrid,
   Legend,
@@ -9,7 +10,6 @@ import {
   YAxis,
 } from "recharts";
 import { COUNT_TREND_METRICS } from "../constants";
-import type { DataPoint } from "../types";
 import { getChartProps } from "../utils";
 import {
   CustomLegendContent,
