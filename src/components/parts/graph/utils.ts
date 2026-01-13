@@ -1,3 +1,4 @@
+import { useChartSettings } from "@/context/ChartSettingsContext";
 import type { ChartMetric, DataPoint, TimeUnit } from "@/types/types";
 import * as holidayJp from "@holiday-jp/holiday_jp";
 import { groupBy, mutate, sum, summarize, tidy } from "@tidyjs/tidy";
@@ -5,7 +6,14 @@ import dayjs from "dayjs";
 import { DAYS } from "./constants";
 
 export const getDateInfo = (dateStr: string) => {
+  const { timeUnit } = useChartSettings();
   const date = new Date(dateStr);
+  if (timeUnit === "month") {
+    const formattedDate = `${date.getFullYear()}-${String(
+      date.getMonth() + 1
+    ).padStart(2, "0")}`;
+    return { formattedDate, displayText: "", color: "#666" };
+  }
   const dayOfWeek = DAYS[date.getDay()];
   const holiday = holidayJp.between(date, date)[0];
 
