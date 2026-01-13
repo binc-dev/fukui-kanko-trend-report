@@ -1,4 +1,5 @@
 import { useChartSettings } from "@/context/ChartSettingsContext";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { CountTrendChart } from "./charts/count-trend-chart";
 import { ReviewTrendChart } from "./charts/review-trend-chart";
@@ -6,14 +7,29 @@ import { useMetricsData } from "./hooks/use-metrics-data";
 import { aggregateData } from "./utils";
 
 export function Graph() {
-  const { area, timeUnit } = useChartSettings();
+  const { area, timeUnit, dateRange } = useChartSettings();
   const { data } = useMetricsData(area);
 
   const [countHoveredKey, setCountHoveredKey] = useState<string | null>(null);
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());
 
-  const chartData = aggregateData(data, timeUnit);
+  const filteredData = (() => {
+    if (!data || !dateRange?.from || !dateRange?.to) return [];
+
+    const start = dayjs(dateRange.from).startOf("day");
+    const end = dayjs(dateRange.to).endOf("day");
+
+    return data.filter((item) => {
+      const itemDate = dayjs(item.date);
+      return (
+        (itemDate.isAfter(start) || itemDate.isSame(start)) &&
+        (itemDate.isBefore(end) || itemDate.isSame(end))
+      );
+    });
+  })();
+
+  const chartData = aggregateData(filteredData, timeUnit);
 
   // 凡例の項目を表示・非表示に切り替える関数
   const toggleKey = (key: string) => {
