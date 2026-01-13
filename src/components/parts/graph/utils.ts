@@ -3,7 +3,8 @@ import type { ChartMetric, DataPoint, TimeUnit } from "@/types/types";
 import * as holidayJp from "@holiday-jp/holiday_jp";
 import { groupBy, mutate, sum, summarize, tidy } from "@tidyjs/tidy";
 import dayjs from "dayjs";
-import { DAYS, REVIEW_TREND_METRICS } from "./constants";
+import { DAYS } from "./constants";
+import type { AggregatedDataPoint } from "./types";
 
 export const getDateInfo = (dateStr: string) => {
   const { timeUnit } = useChartSettings();
@@ -66,27 +67,20 @@ export const getChartProps = (
 export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
   if (!data || data.length === 0) return [];
 
-  const processData = data.map((entry) => {
-    const updatedEntry: Record<string, string | number | null> = { ...entry };
-    REVIEW_TREND_METRICS.forEach((metric) => {
-      if (metric.type === "line" && updatedEntry[metric.id] === 0) {
-        updatedEntry[metric.id] = null;
-      }
-    });
-    return updatedEntry as DataPoint;
-  });
-
   if (unit === "day" || unit === "week") {
-    return processData;
+    return data.map((entry) => ({
+      ...entry,
+      average_rating: entry.average_rating === 0 ? null : entry.average_rating,
+    })) as AggregatedDataPoint[];
   }
 
   return tidy(
-    processData,
+    data,
     mutate({
-      date: (data) => {
-        const date = dayjs(data.date);
-        return date.format("YYYY-MM");
-      },
+      date: (data) => dayjs(data.date).format("YYYY-MM"),
+      weighted_rating: (data) =>
+        ((data.average_rating as number) || 0) *
+        ((data.review_count_change as number) || 0),
     }),
     groupBy("date", [
       summarize({
@@ -95,7 +89,17 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
         directions: sum("directions"),
         call_clicks: sum("call_clicks"),
         website_clicks: sum("website_clicks"),
+        review_count_change: sum("review_count_change"),
+        weighted_rating_sum: sum("weighted_rating"),
       }),
-    ])
-  ).sort((a, b) => a.date.localeCompare(b.date));
+    ]),
+    mutate({
+      average_rating: (data) =>
+        data.review_count_change > 0
+          ? Math.round(
+              (data.weighted_rating_sum / data.review_count_change) * 10
+            ) / 10
+          : null,
+    })
+  ).sort((a, b) => a.date.localeCompare(b.date)) as AggregatedDataPoint[];
 };
