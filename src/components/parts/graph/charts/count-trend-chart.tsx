@@ -9,7 +9,7 @@ import {
   YAxis,
 } from "recharts";
 import { COUNT_TREND_METRICS } from "../constants";
-import type { DataPoint } from "../types";
+import type { AggregatedDataPoint } from "../types";
 import { getChartProps } from "../utils";
 import {
   CustomLegendContent,
@@ -24,7 +24,7 @@ export function CountTrendChart({
   onHover,
   onToggle,
 }: {
-  data: DataPoint[];
+  data: AggregatedDataPoint[];
   hoveredKey: string | null;
   hiddenKeys: Set<string>;
   onHover: (key: string | null) => void;

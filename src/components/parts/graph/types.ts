@@ -1,6 +1,15 @@
-export type DataPoint = {
+export type AggregatedDataPoint = {
   date: string;
-  [key: string]: string | number;
+  map_views: number;
+  search_views: number;
+  directions: number;
+  call_clicks: number;
+  website_clicks: number;
+  total_reviews?: number;
+  average_rating: number | null;
+  review_count_change: number;
+  location_count?: number;
+  weighted_rating_sum?: number;
 };
 
 export type CustomXAxisTickProps = {
@@ -12,7 +21,7 @@ export type CustomXAxisTickProps = {
 };
 
 type TooltipPayloadItem = {
-  payload: DataPoint;
+  payload: AggregatedDataPoint;
   name: string;
   value: number;
   color: string;
@@ -39,11 +48,4 @@ export type CustomLegendContentProps = {
   onHover: (key: string) => void;
   onLeave: () => void;
   onToggle: (key: string) => void;
-};
-
-export type ChartMetric = {
-  id: string;
-  name: string;
-  color: string;
-  type?: "line" | "bar";
 };

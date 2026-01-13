@@ -1,13 +1,19 @@
+import { useChartSettings } from "@/context/ChartSettingsContext";
 import { useState } from "react";
 import { CountTrendChart } from "./charts/count-trend-chart";
 import { ReviewTrendChart } from "./charts/review-trend-chart";
 import { useMetricsData } from "./hooks/use-metrics-data";
+import { aggregateData } from "./utils";
 
-export function Graph({ selectedArea }: { selectedArea: string }) {
-  const { data, reviewChartData } = useMetricsData(selectedArea);
+export function Graph() {
+  const { area, timeUnit } = useChartSettings();
+  const { data } = useMetricsData(area);
+
   const [countHoveredKey, setCountHoveredKey] = useState<string | null>(null);
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());
+
+  const chartData = aggregateData(data, timeUnit);
 
   // 凡例の項目を表示・非表示に切り替える関数
   const toggleKey = (key: string) => {
@@ -31,7 +37,7 @@ export function Graph({ selectedArea }: { selectedArea: string }) {
         回数推移
       </h2>
       <CountTrendChart
-        data={data}
+        data={chartData}
         hoveredKey={countHoveredKey}
         hiddenKeys={hiddenKeys}
         onHover={setCountHoveredKey}
@@ -42,7 +48,7 @@ export function Graph({ selectedArea }: { selectedArea: string }) {
         レビュー推移
       </h2>
       <ReviewTrendChart
-        data={reviewChartData}
+        data={chartData}
         hoveredKey={reviewHoveredKey}
         hiddenKeys={hiddenKeys}
         onHover={setReviewHoveredKey}
