@@ -17,6 +17,10 @@ interface ChartSettingsContextType {
   setTimeUnit: (timeUnit: TimeUnit) => void;
   dateRange: DateRange | undefined;
   setDateRange: Dispatch<SetStateAction<DateRange | undefined>>;
+  availableRange: { min: Date | null; max: Date | null };
+  setAvailableRange: Dispatch<
+    SetStateAction<{ min: Date | null; max: Date | null }>
+  >;
 }
 
 const ChartSettingsContext = createContext<
@@ -34,10 +38,26 @@ export const ChartSettingsProvider = ({
     from: dayjs().subtract(1, "month").toDate(),
     to: dayjs().toDate(),
   });
+  const [availableRange, setAvailableRange] = useState<{
+    min: Date | null;
+    max: Date | null;
+  }>({
+    min: null,
+    max: null,
+  });
 
   return (
     <ChartSettingsContext.Provider
-      value={{ area, setArea, timeUnit, setTimeUnit, dateRange, setDateRange }}
+      value={{
+        area,
+        setArea,
+        timeUnit,
+        setTimeUnit,
+        dateRange,
+        setDateRange,
+        availableRange,
+        setAvailableRange,
+      }}
     >
       {children}
     </ChartSettingsContext.Provider>

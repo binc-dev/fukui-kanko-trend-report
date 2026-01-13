@@ -10,7 +10,10 @@ import { CalendarIcon } from "@primer/octicons-react";
 import dayjs from "dayjs";
 
 export function DateRangePicker() {
-  const { dateRange, setDateRange } = useChartSettings();
+  const { dateRange, setDateRange, availableRange } = useChartSettings();
+
+  const min = availableRange.min ?? undefined;
+  const max = availableRange.max ?? undefined;
 
   return (
     <div className="flex flex-row gap-6">
@@ -39,7 +42,9 @@ export function DateRangePicker() {
                 setDateRange((prev) => ({ ...prev, from: date }))
               }
               disabled={(date) =>
-                dateRange?.to ? dayjs(date).isAfter(dateRange.to) : false
+                (min ? dayjs(date).isBefore(min, "day") : false) ||
+                (max ? dayjs(date).isAfter(max, "day") : false) ||
+                (dateRange?.to ? dayjs(date).isAfter(dateRange.to) : false)
               }
               className="rounded-md border shadow-sm"
               captionLayout="dropdown"
@@ -78,7 +83,9 @@ export function DateRangePicker() {
                 }))
               }
               disabled={(date) =>
-                dateRange?.from ? dayjs(date).isBefore(dateRange.from) : false
+                (min ? dayjs(date).isBefore(min, "day") : false) ||
+                (max ? dayjs(date).isAfter(max, "day") : false) ||
+                (dateRange?.from ? dayjs(date).isBefore(dateRange.from) : false)
               }
               className="rounded-md border shadow-sm"
               captionLayout="dropdown"
