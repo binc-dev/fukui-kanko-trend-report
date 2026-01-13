@@ -1,6 +1,14 @@
 export type DataPoint = {
   date: string;
-  [key: string]: string | number;
+  map_views: number;
+  search_views: number;
+  directions: number;
+  call_clicks: number;
+  website_clicks: number;
+  total_reviews: number;
+  average_rating: number;
+  review_count_change: number;
+  location_count: number;
 };
 
 export type ChartMetric = {

@@ -3,7 +3,6 @@ import * as holidayJp from "@holiday-jp/holiday_jp";
 import { groupBy, mutate, sum, summarize, tidy } from "@tidyjs/tidy";
 import dayjs from "dayjs";
 import { DAYS } from "./constants";
-import type { AggregatedDataPoint } from "./types";
 
 export const getDateInfo = (dateStr: string, timeUnit: TimeUnit) => {
   const d = dayjs(dateStr);
@@ -71,7 +70,7 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
     return data.map((entry) => ({
       ...entry,
       average_rating: entry.average_rating === 0 ? null : entry.average_rating,
-    })) as AggregatedDataPoint[];
+    }));
   }
 
   return tidy(
@@ -79,8 +78,7 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
     mutate({
       date: (data) => dayjs(data.date).format("YYYY-MM"),
       weighted_rating: (data) =>
-        ((data.average_rating as number) || 0) *
-        ((data.review_count_change as number) || 0),
+        (data.average_rating || 0) * (data.review_count_change || 0),
     }),
     groupBy("date", [
       summarize({
@@ -101,5 +99,5 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
             ) / 10
           : null,
     })
-  ).sort((a, b) => a.date.localeCompare(b.date)) as AggregatedDataPoint[];
+  ).sort((a, b) => a.date.localeCompare(b.date));
 };

@@ -1,7 +1,17 @@
 import type { DataPoint } from "@/types/types";
 
-export type AggregatedDataPoint = DataPoint & {
-  average_rating: string | number | null;
+export type AggregatedDataPoint = {
+  date: string;
+  map_views: number;
+  search_views: number;
+  directions: number;
+  call_clicks: number;
+  website_clicks: number;
+  total_reviews?: number;
+  average_rating: number | null;
+  review_count_change: number;
+  location_count?: number;
+  weighted_rating_sum?: number;
 };
 
 export type CustomXAxisTickProps = {
