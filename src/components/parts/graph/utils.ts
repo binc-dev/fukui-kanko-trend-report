@@ -2,7 +2,9 @@ import type { ChartMetric, DataPoint, TimeUnit } from "@/types/types";
 import * as holidayJp from "@holiday-jp/holiday_jp";
 import { groupBy, mutate, sum, summarize, tidy } from "@tidyjs/tidy";
 import dayjs from "dayjs";
+import isoWeek from "dayjs/plugin/isoWeek";
 import { DAYS } from "./constants";
+dayjs.extend(isoWeek);
 
 export const getDateInfo = (dateStr: string, timeUnit: TimeUnit) => {
   const d = dayjs(dateStr);
@@ -12,6 +14,14 @@ export const getDateInfo = (dateStr: string, timeUnit: TimeUnit) => {
     return {
       formattedDate: d.format("YYYY-MM"),
       displayText: "",
+      color: "#666",
+    };
+  }
+
+  if (timeUnit === "week") {
+    return {
+      formattedDate: d.format("YYYY-MM-DD") + "週",
+      displayText: ``,
       color: "#666",
     };
   }
@@ -66,17 +76,22 @@ export const getChartProps = (
 export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
   if (!data || data.length === 0) return [];
 
-  if (unit === "day" || unit === "week") {
+  if (unit === "day") {
     return data.map((entry) => ({
       ...entry,
       average_rating: entry.average_rating === 0 ? null : entry.average_rating,
     }));
   }
 
+  const dateformat = unit === "month" ? "YYYY-MM" : "YYYY-MM-DD";
+
   return tidy(
     data,
     mutate({
-      date: (data) => dayjs(data.date).format("YYYY-MM"),
+      date: (data) =>
+        unit === "month"
+          ? dayjs(data.date).format(dateformat)
+          : dayjs(data.date).startOf("isoWeek").format(dateformat),
       weighted_rating: (data) =>
         (data.average_rating || 0) * (data.review_count_change || 0),
     }),
