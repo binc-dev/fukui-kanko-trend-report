@@ -3,7 +3,7 @@ import type { ChartMetric, DataPoint, TimeUnit } from "@/types/types";
 import * as holidayJp from "@holiday-jp/holiday_jp";
 import { groupBy, mutate, sum, summarize, tidy } from "@tidyjs/tidy";
 import dayjs from "dayjs";
-import { DAYS } from "./constants";
+import { DAYS, REVIEW_TREND_METRICS } from "./constants";
 
 export const getDateInfo = (dateStr: string) => {
   const { timeUnit } = useChartSettings();
@@ -66,12 +66,22 @@ export const getChartProps = (
 export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
   if (!data || data.length === 0) return [];
 
+  const processData = data.map((entry) => {
+    const updatedEntry: Record<string, string | number | null> = { ...entry };
+    REVIEW_TREND_METRICS.forEach((metric) => {
+      if (metric.type === "line" && updatedEntry[metric.id] === 0) {
+        updatedEntry[metric.id] = null;
+      }
+    });
+    return updatedEntry as DataPoint;
+  });
+
   if (unit === "day" || unit === "week") {
-    return data;
+    return processData;
   }
 
   return tidy(
-    data,
+    processData,
     mutate({
       date: (data) => {
         const date = dayjs(data.date);

@@ -7,7 +7,7 @@ import { aggregateData } from "./utils";
 
 export function Graph() {
   const { area, timeUnit } = useChartSettings();
-  const { data, reviewChartData } = useMetricsData(area);
+  const { data } = useMetricsData(area);
 
   const [countHoveredKey, setCountHoveredKey] = useState<string | null>(null);
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
@@ -48,7 +48,7 @@ export function Graph() {
         レビュー推移
       </h2>
       <ReviewTrendChart
-        data={reviewChartData}
+        data={chartData}
         hoveredKey={reviewHoveredKey}
         hiddenKeys={hiddenKeys}
         onHover={setReviewHoveredKey}
