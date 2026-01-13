@@ -1,3 +1,4 @@
+import { useChartSettings } from "@/context/ChartSettingsContext";
 import type {
   CustomLegendContentProps,
   CustomTooltipContentProps,
@@ -6,8 +7,12 @@ import type {
 import { getDateInfo } from "../utils";
 
 export const CustomXAxisTick = ({ x, y, payload }: CustomXAxisTickProps) => {
+  const { timeUnit } = useChartSettings();
   if (!payload?.value) return null;
-  const { formattedDate, displayText, color } = getDateInfo(payload.value);
+  const { formattedDate, displayText, color } = getDateInfo(
+    payload.value,
+    timeUnit
+  );
 
   return (
     <g transform={`translate(${x},${y})`}>
@@ -27,9 +32,11 @@ export const CustomTooltipContent = ({
   chartType,
   hiddenKeys,
 }: CustomTooltipContentProps) => {
+  const { timeUnit } = useChartSettings();
   if (!active || !payload?.length) return null;
   const { formattedDate, displayText, color } = getDateInfo(
-    payload[0].payload.date
+    payload[0].payload.date,
+    timeUnit
   );
 
   return (
