@@ -1,5 +1,3 @@
-import type { DataPoint } from "@/types/types";
-
 export type AggregatedDataPoint = {
   date: string;
   map_views: number;
@@ -23,7 +21,7 @@ export type CustomXAxisTickProps = {
 };
 
 type TooltipPayloadItem = {
-  payload: DataPoint;
+  payload: AggregatedDataPoint;
   name: string;
   value: number;
   color: string;
