@@ -36,14 +36,14 @@ export const ChartSettingsProvider = ({
   const [timeUnit, setTimeUnit] = useState<TimeUnit>("day");
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: dayjs().subtract(1, "month").toDate(),
-    to: dayjs().toDate(),
+    to: dayjs().subtract(1, "day").toDate(),
   });
   const [availableRange, setAvailableRange] = useState<{
     min: Date | null;
     max: Date | null;
   }>({
     min: null,
-    max: null,
+    max: dayjs().subtract(1, "day").toDate(),
   });
 
   return (

@@ -16,10 +16,9 @@ export function Graph() {
     if (data && data.length > 0) {
       const dates = data.map((d) => dayjs(d.date));
       const minDate = dayjs.min(dates);
-      const maxDate = dayjs.max(dates);
 
-      if (minDate && maxDate) {
-        setAvailableRange({ min: minDate.toDate(), max: maxDate.toDate() });
+      if (minDate) {
+        setAvailableRange((prev) => ({ ...prev, min: minDate.toDate() }));
       }
     }
   }, [data, setAvailableRange]);
