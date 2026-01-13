@@ -8,7 +8,7 @@ interface ChartSettingsContextType {
   setTimeUnit: (timeUnit: TimeUnit) => void;
 }
 
-const chartSettingsContext = createContext<
+const ChartSettingsContext = createContext<
   ChartSettingsContextType | undefined
 >(undefined);
 
@@ -21,16 +21,16 @@ export const ChartSettingsProvider = ({
   const [timeUnit, setTimeUnit] = useState<TimeUnit>("day");
 
   return (
-    <chartSettingsContext.Provider
+    <ChartSettingsContext.Provider
       value={{ area, setArea, timeUnit, setTimeUnit }}
     >
       {children}
-    </chartSettingsContext.Provider>
+    </ChartSettingsContext.Provider>
   );
 };
 
 export const useChartSettings = () => {
-  const context = useContext(chartSettingsContext);
+  const context = useContext(ChartSettingsContext);
 
   if (context === undefined) {
     throw new Error(
