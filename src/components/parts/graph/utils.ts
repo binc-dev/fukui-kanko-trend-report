@@ -83,15 +83,15 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
     }));
   }
 
-  const dateformat = unit === "month" ? "YYYY-MM" : "YYYY-MM-DD";
+  const dateFormat = unit === "month" ? "YYYY-MM" : "YYYY-MM-DD";
 
   return tidy(
     data,
     mutate({
       date: (data) =>
         unit === "month"
-          ? dayjs(data.date).format(dateformat)
-          : dayjs(data.date).startOf("isoWeek").format(dateformat),
+          ? dayjs(data.date).format(dateFormat)
+          : dayjs(data.date).startOf("isoWeek").format(dateFormat),
       weighted_rating: (data) =>
         (data.average_rating || 0) * (data.review_count_change || 0),
     }),
