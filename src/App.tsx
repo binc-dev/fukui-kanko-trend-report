@@ -1,7 +1,7 @@
+import { DateRangePicker } from "@/components/parts/date-range-picker";
 import { Graph } from "@/components/parts/graph";
 import { Header } from "@/components/parts/header";
 import { AreaSelector } from "@/components/parts/selector/area-selector";
-import { DateRangePicker } from "./components/parts/selector/date-range-picker";
 import { TimeUnitSelector } from "./components/parts/selector/time-unit-selector";
 import { ChartSettingsProvider } from "./context/ChartSettingsContext";
 

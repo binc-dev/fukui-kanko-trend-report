@@ -9,7 +9,7 @@ import { useChartSettings } from "@/context/ChartSettingsContext";
 import { CalendarIcon } from "@primer/octicons-react";
 import dayjs from "dayjs";
 
-export function DateRangePicker() {
+export function DayRangePicker() {
   const { dateRange, setDateRange, availableRange } = useChartSettings();
 
   const min = availableRange.min ?? undefined;
