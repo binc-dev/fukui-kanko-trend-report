@@ -37,17 +37,25 @@ export function MonthRangePicker() {
             <MonthPicker
               selected={dateRange?.from}
               onChange={(date) => {
-                const startDate = dayjs(date).startOf("month").toDate();
-                setDateRange((prev) => {
-                  const shouldResetTo =
-                    prev?.to &&
-                    dayjs(startDate).isAfter(dayjs(prev.to), "month");
-                  return {
-                    ...prev,
-                    from: startDate,
-                    to: shouldResetTo ? undefined : prev?.to,
-                  };
-                });
+                const isSame =
+                  dateRange?.from &&
+                  dayjs(date).isSame(dayjs(dateRange.from), "month");
+
+                if (isSame) {
+                  setDateRange((prev) => ({ ...prev, from: undefined }));
+                } else {
+                  const startDate = dayjs(date).startOf("month").toDate();
+                  setDateRange((prev) => {
+                    const shouldResetTo =
+                      prev?.to &&
+                      dayjs(startDate).isAfter(dayjs(prev.to), "month");
+                    return {
+                      ...prev,
+                      from: startDate,
+                      to: shouldResetTo ? undefined : prev?.to,
+                    };
+                  });
+                }
                 setIsStartOpen(false);
               }}
             />
@@ -77,12 +85,24 @@ export function MonthRangePicker() {
               selected={dateRange?.to}
               min={dateRange?.from}
               onChange={(date) => {
-                const endDate = dayjs(date).endOf("month").toDate();
-                setDateRange((prev) => ({
-                  ...prev,
-                  from: prev?.from,
-                  to: endDate,
-                }));
+                const isSameAsCurrent =
+                  dateRange?.to &&
+                  dayjs(date).isSame(dayjs(dateRange.to), "month");
+
+                if (isSameAsCurrent) {
+                  setDateRange((prev) => ({
+                    ...prev,
+                    from: prev?.from,
+                    to: undefined,
+                  }));
+                } else {
+                  const endDate = dayjs(date).endOf("month").toDate();
+                  setDateRange((prev) => ({
+                    ...prev,
+                    from: prev?.from,
+                    to: endDate,
+                  }));
+                }
                 setIsEndOpen(false);
               }}
             />
