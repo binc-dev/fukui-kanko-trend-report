@@ -21,13 +21,19 @@ const MONTHS = [
 export function MonthPicker({
   onChange,
   selected,
+  min,
 }: {
   onChange: (date: Date) => void;
   selected?: Date;
+  min?: Date;
 }) {
   const { availableRange } = useChartSettings();
 
-  const minDate = availableRange.min ? dayjs(availableRange.min) : undefined;
+  const minDate = min
+    ? dayjs(min)
+    : availableRange.min
+    ? dayjs(availableRange.min)
+    : undefined;
   const maxDate = availableRange.max ? dayjs(availableRange.max) : undefined;
   const selectedDate = selected ? dayjs(selected) : undefined;
   // 範囲の年を算出
