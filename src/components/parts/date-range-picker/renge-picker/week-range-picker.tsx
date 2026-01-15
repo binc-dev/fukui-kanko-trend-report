@@ -74,6 +74,8 @@ export function WeekRangePicker() {
               locale={ja}
               mode="range"
               defaultMonth={dateRange?.from}
+              startMonth={min}
+              endMonth={max}
               selected={
                 dateRange?.from ? getWeekRange(dateRange.from) : undefined
               }
@@ -116,6 +118,8 @@ export function WeekRangePicker() {
               locale={ja}
               mode="range"
               defaultMonth={dateRange?.to}
+              startMonth={min}
+              endMonth={max}
               selected={
                 dateRange?.to
                   ? {

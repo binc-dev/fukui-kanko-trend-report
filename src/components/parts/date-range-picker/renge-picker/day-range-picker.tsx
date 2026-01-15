@@ -39,6 +39,8 @@ export function DayRangePicker() {
               locale={ja}
               mode="single"
               defaultMonth={dateRange?.from}
+              startMonth={min}
+              endMonth={max}
               selected={dateRange?.from}
               onSelect={(date) =>
                 setDateRange((prev) => ({ ...prev, from: date }))
@@ -77,6 +79,8 @@ export function DayRangePicker() {
               locale={ja}
               mode="single"
               defaultMonth={dateRange?.to}
+              startMonth={min}
+              endMonth={max}
               selected={dateRange?.to}
               onSelect={(date) =>
                 setDateRange((prev) => ({
