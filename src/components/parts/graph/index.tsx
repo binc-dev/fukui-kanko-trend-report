@@ -27,6 +27,14 @@ export function Graph() {
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());
 
+  if (!dateRange?.from || !dateRange?.to) {
+    return (
+      <div className="w-full flex items-center justify-center h-64 text-gray-500">
+        <p className="text-lg">表示したい期間を設定してください。</p>
+      </div>
+    );
+  }
+
   const filteredData = (() => {
     if (!data || !dateRange?.from || !dateRange?.to) return [];
 

@@ -8,7 +8,7 @@ import { ChartSettingsProvider } from "./context/ChartSettingsContext";
 function App() {
   return (
     <ChartSettingsProvider>
-      <div className="flex flex-col min-h-screen items-center justify-center w-full p-4">
+      <div className="flex flex-col min-h-screen items-center w-full p-4">
         <Header />
 
         <div className="flex flex-col gap-2">
