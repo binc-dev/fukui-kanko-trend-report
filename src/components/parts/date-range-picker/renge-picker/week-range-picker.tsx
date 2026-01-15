@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/popover";
 import { useChartSettings } from "@/context/ChartSettingsContext";
 import { CalendarIcon } from "@primer/octicons-react";
+import { ja } from "date-fns/locale";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
 dayjs.extend(isoWeek);
@@ -70,6 +71,7 @@ export function WeekRangePicker() {
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
+              locale={ja}
               mode="range"
               defaultMonth={dateRange?.from}
               selected={
@@ -111,6 +113,7 @@ export function WeekRangePicker() {
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
+              locale={ja}
               mode="range"
               defaultMonth={dateRange?.to}
               selected={

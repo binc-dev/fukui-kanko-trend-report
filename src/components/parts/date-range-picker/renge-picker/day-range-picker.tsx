@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/popover";
 import { useChartSettings } from "@/context/ChartSettingsContext";
 import { CalendarIcon } from "@primer/octicons-react";
+import { ja } from "date-fns/locale";
 import dayjs from "dayjs";
 
 export function DayRangePicker() {
@@ -35,6 +36,7 @@ export function DayRangePicker() {
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
+              locale={ja}
               mode="single"
               defaultMonth={dateRange?.from}
               selected={dateRange?.from}
@@ -72,6 +74,7 @@ export function DayRangePicker() {
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
+              locale={ja}
               mode="single"
               defaultMonth={dateRange?.to}
               selected={dateRange?.to}
