@@ -79,15 +79,24 @@ export function WeekRangePicker() {
               selected={
                 dateRange?.from ? getWeekRange(dateRange.from) : undefined
               }
-              onSelect={(range) => {
+              onSelect={(range) =>
                 handleWeekSelect(range, dateRange, true, (newRange) =>
-                  setDateRange((prev) => ({ ...prev, from: newRange?.from }))
-                );
-              }}
+                  setDateRange((prev) => {
+                    const shouldResetTo =
+                      prev?.to &&
+                      newRange &&
+                      dayjs(newRange.from).isAfter(prev.to, "day");
+                    return {
+                      ...prev,
+                      from: newRange?.from,
+                      to: shouldResetTo ? undefined : prev?.to,
+                    };
+                  })
+                )
+              }
               disabled={(date) =>
                 (min ? dayjs(date).isBefore(min, "day") : false) ||
-                (max ? dayjs(date).isAfter(max, "day") : false) ||
-                (dateRange?.to ? dayjs(date).isAfter(dateRange.to) : false)
+                (max ? dayjs(date).isAfter(max, "day") : false)
               }
               className="rounded-md border shadow-sm"
               captionLayout="dropdown"
@@ -118,7 +127,7 @@ export function WeekRangePicker() {
               locale={ja}
               mode="range"
               defaultMonth={dateRange?.to}
-              startMonth={min}
+              startMonth={dateRange?.from ?? min}
               endMonth={max}
               selected={
                 dateRange?.to

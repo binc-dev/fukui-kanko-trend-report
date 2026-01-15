@@ -42,13 +42,22 @@ export function DayRangePicker() {
               startMonth={min}
               endMonth={max}
               selected={dateRange?.from}
-              onSelect={(date) =>
-                setDateRange((prev) => ({ ...prev, from: date }))
+              onSelect={(newFrom) =>
+                setDateRange((prev) => {
+                  const shouldResetTo =
+                    prev?.to &&
+                    newFrom &&
+                    dayjs(newFrom).isAfter(prev.to, "day");
+                  return {
+                    ...prev,
+                    from: newFrom,
+                    to: shouldResetTo ? undefined : prev?.to,
+                  };
+                })
               }
               disabled={(date) =>
                 (min ? dayjs(date).isBefore(min, "day") : false) ||
-                (max ? dayjs(date).isAfter(max, "day") : false) ||
-                (dateRange?.to ? dayjs(date).isAfter(dateRange.to) : false)
+                (max ? dayjs(date).isAfter(max, "day") : false)
               }
               className="rounded-md border shadow-sm"
               captionLayout="dropdown"
@@ -79,7 +88,7 @@ export function DayRangePicker() {
               locale={ja}
               mode="single"
               defaultMonth={dateRange?.to}
-              startMonth={min}
+              startMonth={dateRange?.from ?? min}
               endMonth={max}
               selected={dateRange?.to}
               onSelect={(date) =>
