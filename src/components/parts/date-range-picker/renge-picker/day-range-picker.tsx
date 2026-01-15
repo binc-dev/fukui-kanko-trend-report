@@ -9,9 +9,12 @@ import { useChartSettings } from "@/context/ChartSettingsContext";
 import { CalendarIcon } from "@primer/octicons-react";
 import { ja } from "date-fns/locale";
 import dayjs from "dayjs";
+import { useState } from "react";
 
 export function DayRangePicker() {
   const { dateRange, setDateRange, availableRange } = useChartSettings();
+  const [isStartOpen, setIsStartOpen] = useState(false);
+  const [isEndOpen, setIsEndOpen] = useState(false);
 
   const min = availableRange.min ?? undefined;
   const max = availableRange.max ?? undefined;
@@ -20,7 +23,7 @@ export function DayRangePicker() {
     <div className="flex flex-row gap-6">
       <div className="flex flex-col gap-1">
         <p>開始</p>
-        <Popover>
+        <Popover open={isStartOpen} onOpenChange={setIsStartOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
@@ -42,7 +45,7 @@ export function DayRangePicker() {
               startMonth={min}
               endMonth={max}
               selected={dateRange?.from}
-              onSelect={(newFrom) =>
+              onSelect={(newFrom) => {
                 setDateRange((prev) => {
                   const shouldResetTo =
                     prev?.to &&
@@ -53,8 +56,9 @@ export function DayRangePicker() {
                     from: newFrom,
                     to: shouldResetTo ? undefined : prev?.to,
                   };
-                })
-              }
+                });
+                setIsStartOpen(false);
+              }}
               disabled={(date) =>
                 (min ? dayjs(date).isBefore(min, "day") : false) ||
                 (max ? dayjs(date).isAfter(max, "day") : false)
@@ -68,7 +72,7 @@ export function DayRangePicker() {
       <div className="flex items-end pb-1 text-xl">〜</div>
       <div className="flex flex-col gap-1">
         <p>終了</p>
-        <Popover>
+        <Popover open={isEndOpen} onOpenChange={setIsEndOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
@@ -91,13 +95,14 @@ export function DayRangePicker() {
               startMonth={dateRange?.from ?? min}
               endMonth={max}
               selected={dateRange?.to}
-              onSelect={(date) =>
+              onSelect={(date) => {
                 setDateRange((prev) => ({
                   ...prev,
                   from: prev?.from,
                   to: date,
-                }))
-              }
+                }));
+                setIsEndOpen(false);
+              }}
               disabled={(date) =>
                 (min ? dayjs(date).isBefore(min, "day") : false) ||
                 (max ? dayjs(date).isAfter(max, "day") : false) ||

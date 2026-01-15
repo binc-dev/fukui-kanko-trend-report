@@ -10,10 +10,13 @@ import { CalendarIcon } from "@primer/octicons-react";
 import { ja } from "date-fns/locale";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
+import { useState } from "react";
 dayjs.extend(isoWeek);
 
 export function WeekRangePicker() {
   const { dateRange, setDateRange, availableRange } = useChartSettings();
+  const [isStartOpen, setIsStartOpen] = useState(false);
+  const [isEndOpen, setIsEndOpen] = useState(false);
 
   const min = availableRange.min ?? undefined;
   const max = availableRange.max ?? undefined;
@@ -55,7 +58,7 @@ export function WeekRangePicker() {
     <div className="flex flex-row gap-6">
       <div className="flex flex-col gap-1">
         <p>開始</p>
-        <Popover>
+        <Popover open={isStartOpen} onOpenChange={setIsStartOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
@@ -79,7 +82,7 @@ export function WeekRangePicker() {
               selected={
                 dateRange?.from ? getWeekRange(dateRange.from) : undefined
               }
-              onSelect={(range) =>
+              onSelect={(range) => {
                 handleWeekSelect(range, dateRange, true, (newRange) =>
                   setDateRange((prev) => {
                     const shouldResetTo =
@@ -92,8 +95,9 @@ export function WeekRangePicker() {
                       to: shouldResetTo ? undefined : prev?.to,
                     };
                   })
-                )
-              }
+                );
+                setIsStartOpen(false);
+              }}
               disabled={(date) =>
                 (min ? dayjs(date).isBefore(min, "day") : false) ||
                 (max ? dayjs(date).isAfter(max, "day") : false)
@@ -107,7 +111,7 @@ export function WeekRangePicker() {
       <div className="flex items-end pb-1 text-xl">〜</div>
       <div className="flex flex-col gap-1">
         <p>終了</p>
-        <Popover>
+        <Popover open={isEndOpen} onOpenChange={setIsEndOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
@@ -145,6 +149,7 @@ export function WeekRangePicker() {
                     to: newRange?.to,
                   }))
                 );
+                setIsEndOpen(false);
               }}
               disabled={(date) =>
                 (min ? dayjs(date).isBefore(min, "day") : false) ||
