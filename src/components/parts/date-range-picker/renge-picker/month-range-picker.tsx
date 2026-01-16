@@ -7,7 +7,7 @@ import {
 import { useChartSettings } from "@/context/ChartSettingsContext";
 import { CalendarIcon } from "@primer/octicons-react";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MonthPicker } from "./month-picker.component";
 
 export function MonthRangePicker() {
@@ -17,6 +17,30 @@ export function MonthRangePicker() {
 
   const min = availableRange.min ?? undefined;
   const max = availableRange.max ?? undefined;
+
+  useEffect(() => {
+    if (!dateRange) return;
+
+    const startOfMonth = dateRange.from
+      ? getMonthRange(dateRange.from).start
+      : undefined;
+
+    const endOfMonth = dateRange.to
+      ? getMonthRange(dateRange.to).end
+      : undefined;
+
+    const needsUpdateFrom =
+      dateRange.from && !dayjs(dateRange.from).isSame(startOfMonth, "day");
+    const needsUpdateTo =
+      dateRange.to && !dayjs(dateRange.to).isSame(endOfMonth, "day");
+
+    if (needsUpdateFrom || needsUpdateTo) {
+      setDateRange({
+        from: startOfMonth,
+        to: endOfMonth,
+      });
+    }
+  }, []);
 
   const getMonthRange = (date: Date) => {
     let startDate = dayjs(date).startOf("month").toDate();
