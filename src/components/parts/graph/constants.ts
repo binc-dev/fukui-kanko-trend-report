@@ -1,7 +1,7 @@
 export const COUNT_TREND_METRICS = [
-  { id: "map_views", name: "地図表示", color: "#1F77B4" },
-  { id: "search_views", name: "地図検索", color: "#FF7F0E" },
-  { id: "directions", name: "ルート設定", color: "#2CA02C" },
+  { id: "map_views", name: "地図検索", color: "#1F77B4" },
+  { id: "search_views", name: "Web検索", color: "#FF7F0E" },
+  { id: "directions", name: "ルート検索", color: "#2CA02C" },
   { id: "call_clicks", name: "通話", color: "#D62728" },
   { id: "website_clicks", name: "ウェブサイトクリック", color: "#9467BD" },
 ] as const;
