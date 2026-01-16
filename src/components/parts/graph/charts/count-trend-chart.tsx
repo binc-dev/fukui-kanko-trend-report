@@ -31,7 +31,7 @@ export function CountTrendChart({
   onToggle: (key: string) => void;
 }) {
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={450}>
       <LineChart data={data} margin={{ top: 12, right: 60 }}>
         <CartesianGrid strokeOpacity={0.3} vertical={false} />
         <XAxis

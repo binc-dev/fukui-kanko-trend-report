@@ -69,7 +69,7 @@ export function Graph() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-12">
+    <div className="w-full flex flex-col gap-4">
       <h2 className="w-full h-10 text-xl col-span-2 mt-8 pt-2 border-t-2 border-gray-100 text-center font-bold">
         回数推移
       </h2>
@@ -81,7 +81,7 @@ export function Graph() {
         onToggle={toggleKey}
       />
 
-      <h2 className="w-full h-10 text-xl col-span-2 mt-8 pt-2 border-t-2 border-gray-100 text-center font-bold">
+      <h2 className="w-full h-10 text-xl col-span-2 mt-6 pt-2 border-t-2 border-gray-100 text-center font-bold">
         レビュー推移
       </h2>
       <ReviewTrendChart

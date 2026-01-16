@@ -32,7 +32,7 @@ export function ReviewTrendChart({
   onToggle: (key: string) => void;
 }) {
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={450}>
       <ComposedChart data={data} margin={{ top: 12 }} barCategoryGap="20%">
         <CartesianGrid
           vertical={hiddenKeys.has("review_count_change")}
