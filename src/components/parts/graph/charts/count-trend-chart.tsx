@@ -33,12 +33,11 @@ export function CountTrendChart({
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart data={data} margin={{ top: 12, right: 60 }}>
-        <CartesianGrid strokeOpacity={0.3} />
+        <CartesianGrid strokeOpacity={0.3} vertical={false} />
         <XAxis
           dataKey="date"
           tick={<CustomXAxisTick />}
           height={60}
-          interval="preserveStartEnd"
           minTickGap={20}
         />
         <YAxis tick={{ fontSize: 12 }} />
