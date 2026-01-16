@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useChartSettings } from "@/context/ChartSettingsContext";
+import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import { useState } from "react";
 
@@ -95,7 +96,11 @@ export function MonthPicker({
             <Button
               key={monthName}
               variant={isSelected ? "default" : "outline"}
-              className="w-16"
+              className={cn(
+                "w-16",
+                isDisabled && "disabled:opacity-30",
+                isSelected && "bg-[#6eba2c] text-white hover:bg-[#5fa024]"
+              )}
               disabled={isDisabled}
               onClick={() => onChange?.(currentMonthDate.toDate())}
             >
