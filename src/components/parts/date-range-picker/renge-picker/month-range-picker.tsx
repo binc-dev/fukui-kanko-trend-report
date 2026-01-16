@@ -11,9 +11,27 @@ import { useState } from "react";
 import { MonthPicker } from "./month-picker.component";
 
 export function MonthRangePicker() {
-  const { dateRange, setDateRange } = useChartSettings();
+  const { dateRange, setDateRange, availableRange } = useChartSettings();
   const [isStartOpen, setIsStartOpen] = useState(false);
   const [isEndOpen, setIsEndOpen] = useState(false);
+
+  const min = availableRange.min ?? undefined;
+  const max = availableRange.max ?? undefined;
+
+  const getMonthRange = (date: Date) => {
+    let startDate = dayjs(date).startOf("month").toDate();
+    let endDate = dayjs(date).endOf("month").toDate();
+
+    if (min && dayjs(startDate).isBefore(min, "day")) {
+      startDate = min;
+    }
+
+    if (max && dayjs(endDate).isAfter(max, "day")) {
+      endDate = max;
+    }
+
+    return { start: startDate, end: endDate };
+  };
 
   return (
     <div className="flex flex-row gap-6">
@@ -44,7 +62,7 @@ export function MonthRangePicker() {
                 if (isSame) {
                   setDateRange((prev) => ({ ...prev, from: undefined }));
                 } else {
-                  const startDate = dayjs(date).startOf("month").toDate();
+                  const { start: startDate } = getMonthRange(date);
                   setDateRange((prev) => {
                     const shouldResetTo =
                       prev?.to &&
@@ -96,7 +114,7 @@ export function MonthRangePicker() {
                     to: undefined,
                   }));
                 } else {
-                  const endDate = dayjs(date).endOf("month").toDate();
+                  const { end: endDate } = getMonthRange(date);
                   setDateRange((prev) => ({
                     ...prev,
                     from: prev?.from,

@@ -22,8 +22,17 @@ export function WeekRangePicker() {
   const max = availableRange.max ?? undefined;
 
   const getWeekRange = (date: Date) => {
-    const monday = dayjs(date).startOf("isoWeek").toDate();
-    const sunday = dayjs(date).endOf("isoWeek").toDate();
+    let monday = dayjs(date).startOf("isoWeek").toDate();
+    let sunday = dayjs(date).endOf("isoWeek").toDate();
+
+    if (min && dayjs(monday).isBefore(min, "day")) {
+      monday = min;
+    }
+
+    if (max && dayjs(sunday).isAfter(max, "day")) {
+      sunday = max;
+    }
+
     return { from: monday, to: sunday };
   };
 
