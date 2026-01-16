@@ -35,7 +35,7 @@ export const ChartSettingsProvider = ({
   const [area, setArea] = useState("total_daily_metrics.csv");
   const [timeUnit, setTimeUnit] = useState<TimeUnit>("day");
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: dayjs().subtract(1, "month").toDate(),
+    from: dayjs().subtract(3, "month").toDate(),
     to: dayjs().subtract(1, "day").toDate(),
   });
   const [availableRange, setAvailableRange] = useState<{
