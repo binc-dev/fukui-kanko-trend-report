@@ -30,31 +30,29 @@ export function MonthPicker({
 }) {
   const { availableRange } = useChartSettings();
 
-  const minDate = min
-    ? dayjs(min)
-    : availableRange.min
-    ? dayjs(availableRange.min)
-    : undefined;
-  const maxDate = availableRange.max ? dayjs(availableRange.max) : undefined;
-  const selectedDate = selected ? dayjs(selected) : undefined;
-  // 範囲の年を算出
-  const minYear = minDate ? minDate.year() : dayjs().year();
-  const maxYear = maxDate ? maxDate.year() : dayjs().year();
-  const [year, setYear] = useState(() => {
-    const initialYear = selectedDate?.year() ?? dayjs().year();
-    return Math.min(maxYear, Math.max(minYear, initialYear));
-  });
+  const minLimit = min ?? availableRange.min ?? undefined;
+  const maxLimit = availableRange.max ?? undefined;
+
+  const minDate = minLimit ? dayjs(minLimit) : undefined;
+  const maxDate = maxLimit ? dayjs(maxLimit) : undefined;
 
   const [prevSelected, setPrevSelected] = useState(selected);
+  const [year, setYear] = useState(() => dayjs(selected || new Date()).year());
+
   if (selected !== prevSelected) {
     setPrevSelected(selected);
     if (selected) {
-      setYear(selected.getFullYear());
+      setYear(dayjs(selected).year());
     }
   }
 
   const handleYearChange = (offset: number) => {
-    setYear((prev) => Math.min(maxYear, Math.max(minYear, prev + offset)));
+    setYear((prev) => {
+      const nextYear = prev + offset;
+      if (minDate && nextYear < minDate.year()) return prev;
+      if (maxDate && nextYear > maxDate.year()) return prev;
+      return nextYear;
+    });
   };
 
   return (
@@ -64,7 +62,7 @@ export function MonthPicker({
           variant="ghost"
           size="icon"
           onClick={() => handleYearChange(-1)}
-          disabled={year <= minYear}
+          disabled={minDate ? year <= minDate.year() : false}
         >
           &lt;
         </Button>
@@ -73,24 +71,26 @@ export function MonthPicker({
           variant="ghost"
           size="icon"
           onClick={() => handleYearChange(1)}
-          disabled={year >= maxYear}
+          disabled={maxDate ? year >= maxDate.year() : false}
         >
           &gt;
         </Button>
       </div>
       <div className="grid grid-cols-4 gap-2">
         {MONTHS.map((monthName, index) => {
-          const currentMonthDate = dayjs(new Date(year, index, 1));
+          const currentMonth = dayjs().year(year).month(index).startOf("month");
 
           const isBeforeMin = minDate
-            ? currentMonthDate.isBefore(minDate, "month")
+            ? currentMonth.isBefore(minDate, "month")
             : false;
           const isAfterMax = maxDate
-            ? currentMonthDate.isAfter(maxDate, "month")
+            ? currentMonth.isAfter(maxDate, "month")
             : false;
           const isDisabled = isBeforeMin || isAfterMax;
 
-          const isSelected = selectedDate?.isSame(currentMonthDate, "month");
+          const isSelected = selected
+            ? dayjs(selected).isSame(currentMonth, "month")
+            : false;
 
           return (
             <Button
@@ -102,7 +102,7 @@ export function MonthPicker({
                 isSelected && "bg-[#6eba2c] text-white hover:bg-[#5fa024]"
               )}
               disabled={isDisabled}
-              onClick={() => onChange?.(currentMonthDate.toDate())}
+              onClick={() => onChange(currentMonth.toDate())}
             >
               {monthName}
             </Button>
