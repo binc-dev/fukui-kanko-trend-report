@@ -10,20 +10,16 @@ export function useInitialRangeAdjustment(
   getRange: (date: Date, min?: Date, max?: Date) => { from: Date; to: Date }
 ) {
   useEffect(() => {
-    if (!dateRange) return;
+    if (!dateRange?.from || !dateRange?.to) return;
 
-    const start = dateRange.from
-      ? getRange(dateRange.from, min, max).from
-      : undefined;
-    const end = dateRange.to ? getRange(dateRange.to, min, max).to : undefined;
+    const start = getRange(dateRange.from, min, max).from;
+    const end = getRange(dateRange.to, min, max).to;
 
-    const needsUpdateFrom =
-      dateRange.from && !dayjs(dateRange.from).isSame(start, "day");
-    const needsUpdateTo =
-      dateRange.to && !dayjs(dateRange.to).isSame(end, "day");
+    const needsUpdateFrom = !dayjs(dateRange.from).isSame(start, "day");
+    const needsUpdateTo = !dayjs(dateRange.to).isSame(end, "day");
 
     if (needsUpdateFrom || needsUpdateTo) {
       setDateRange({ from: start, to: end });
     }
-  }, []);
+  }, [dateRange, min, max, getRange, setDateRange]);
 }
