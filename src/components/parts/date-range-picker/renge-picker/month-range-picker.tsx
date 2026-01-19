@@ -8,6 +8,7 @@ import { useChartSettings } from "@/context/ChartSettingsContext";
 import { CalendarIcon } from "@primer/octicons-react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { getMonthRange } from "../utils";
 import { MonthPicker } from "./month-picker.component";
 
 export function MonthRangePicker() {
@@ -22,40 +23,23 @@ export function MonthRangePicker() {
     if (!dateRange) return;
 
     const startOfMonth = dateRange.from
-      ? getMonthRange(dateRange.from).start
+      ? getMonthRange(dateRange.from, min, max).from
       : undefined;
 
     const endOfMonth = dateRange.to
-      ? getMonthRange(dateRange.to).end
+      ? getMonthRange(dateRange.to, min, max).to
       : undefined;
 
-    const needsUpdateFrom =
-      dateRange.from && !dayjs(dateRange.from).isSame(startOfMonth, "day");
-    const needsUpdateTo =
-      dateRange.to && !dayjs(dateRange.to).isSame(endOfMonth, "day");
-
-    if (needsUpdateFrom || needsUpdateTo) {
+    if (
+      !dayjs(dateRange.from).isSame(startOfMonth, "day") ||
+      !dayjs(dateRange.to).isSame(endOfMonth, "day")
+    ) {
       setDateRange({
         from: startOfMonth,
         to: endOfMonth,
       });
     }
   }, []);
-
-  const getMonthRange = (date: Date) => {
-    let startDate = dayjs(date).startOf("month").toDate();
-    let endDate = dayjs(date).endOf("month").toDate();
-
-    if (min && dayjs(startDate).isBefore(min, "day")) {
-      startDate = min;
-    }
-
-    if (max && dayjs(endDate).isAfter(max, "day")) {
-      endDate = max;
-    }
-
-    return { start: startDate, end: endDate };
-  };
 
   return (
     <div className="flex flex-row gap-6">
@@ -86,7 +70,7 @@ export function MonthRangePicker() {
                 if (isSame) {
                   setDateRange((prev) => ({ ...prev, from: undefined }));
                 } else {
-                  const { start: startDate } = getMonthRange(date);
+                  const { from: startDate } = getMonthRange(date, min, max);
                   setDateRange((prev) => {
                     const shouldResetTo =
                       prev?.to &&
@@ -138,7 +122,7 @@ export function MonthRangePicker() {
                     to: undefined,
                   }));
                 } else {
-                  const { end: endDate } = getMonthRange(date);
+                  const { to: endDate } = getMonthRange(date, min, max);
                   setDateRange((prev) => ({
                     ...prev,
                     from: prev?.from,

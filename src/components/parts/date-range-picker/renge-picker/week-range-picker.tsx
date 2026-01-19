@@ -11,6 +11,7 @@ import { ja } from "date-fns/locale";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
 import { useEffect, useState } from "react";
+import { getWeekRange } from "../utils";
 dayjs.extend(isoWeek);
 
 export function WeekRangePicker() {
@@ -25,38 +26,23 @@ export function WeekRangePicker() {
     if (!dateRange) return;
 
     const startOfWeek = dateRange.from
-      ? getWeekRange(dateRange.from).from
+      ? getWeekRange(dateRange.from, min, max).from
       : undefined;
 
-    const endOfWeek = dateRange.to ? getWeekRange(dateRange.to).to : undefined;
+    const endOfWeek = dateRange.to
+      ? getWeekRange(dateRange.to, min, max).to
+      : undefined;
 
-    const needsUpdateFrom =
-      dateRange.from && !dayjs(dateRange.from).isSame(startOfWeek, "day");
-    const needsUpdateTo =
-      dateRange.to && !dayjs(dateRange.to).isSame(endOfWeek, "day");
-
-    if (needsUpdateFrom || needsUpdateTo) {
+    if (
+      !dayjs(dateRange.from).isSame(startOfWeek, "day") ||
+      !dayjs(dateRange.to).isSame(endOfWeek, "day")
+    ) {
       setDateRange({
         from: startOfWeek,
         to: endOfWeek,
       });
     }
   }, []);
-
-  const getWeekRange = (date: Date) => {
-    let monday = dayjs(date).startOf("isoWeek").toDate();
-    let sunday = dayjs(date).endOf("isoWeek").toDate();
-
-    if (min && dayjs(monday).isBefore(min, "day")) {
-      monday = min;
-    }
-
-    if (max && dayjs(sunday).isAfter(max, "day")) {
-      sunday = max;
-    }
-
-    return { from: monday, to: sunday };
-  };
 
   function handleWeekSelect(
     date: { from?: Date; to?: Date } | undefined,
@@ -66,7 +52,7 @@ export function WeekRangePicker() {
   ) {
     if (!date?.from) return;
 
-    const newWeek = getWeekRange(date.from);
+    const newWeek = getWeekRange(date.from, min, max);
 
     const currentDate = isStartWeek ? current?.from : current?.to;
     if (!currentDate) {
@@ -74,14 +60,14 @@ export function WeekRangePicker() {
       return;
     }
 
-    const currentWeek = getWeekRange(currentDate);
+    const currentWeek = getWeekRange(currentDate, min, max);
     const compareDate = isStartWeek ? newWeek.from : newWeek.to;
     const currentCompareDate = isStartWeek ? currentWeek.from : currentWeek.to;
 
     if (compareDate < currentCompareDate) {
       setRange(newWeek);
     } else if (date.to) {
-      setRange(getWeekRange(date.to));
+      setRange(getWeekRange(date.to, min, max));
     }
   }
 
@@ -111,7 +97,9 @@ export function WeekRangePicker() {
               startMonth={min}
               endMonth={max}
               selected={
-                dateRange?.from ? getWeekRange(dateRange.from) : undefined
+                dateRange?.from
+                  ? getWeekRange(dateRange.from, min, max)
+                  : undefined
               }
               onSelect={(range) => {
                 handleWeekSelect(range, dateRange, true, (newRange) =>
@@ -150,7 +138,9 @@ export function WeekRangePicker() {
               disabled={!dateRange?.from}
             >
               {dateRange?.to ? (
-                dayjs(getWeekRange(dateRange.to).from).format("YYYY/MM/DD週")
+                dayjs(getWeekRange(dateRange.to, min, max).from).format(
+                  "YYYY/MM/DD週"
+                )
               ) : (
                 <span>終了週を選択</span>
               )}
@@ -167,8 +157,8 @@ export function WeekRangePicker() {
               selected={
                 dateRange?.to
                   ? {
-                      from: getWeekRange(dateRange.to).from,
-                      to: getWeekRange(dateRange.to).to,
+                      from: getWeekRange(dateRange.to, min, max).from,
+                      to: getWeekRange(dateRange.to, min, max).to,
                     }
                   : undefined
               }
