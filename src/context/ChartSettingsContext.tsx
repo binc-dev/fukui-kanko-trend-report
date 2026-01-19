@@ -44,7 +44,10 @@ export const ChartSettingsProvider = ({
     to: dayjs().subtract(1, "day").toDate(),
   });
   const [comparisonRange, setComparisonRange] = useState<DateRange | undefined>(
-    undefined
+    {
+      from: dayjs().subtract(3, "month").toDate(),
+      to: dayjs().subtract(1, "day").toDate(),
+    }
   );
   const [availableRange, setAvailableRange] = useState<{
     min: Date | null;
