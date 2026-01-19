@@ -1,11 +1,26 @@
 import type { TimeUnit } from "@/types/types";
-import { createContext, useContext, useState, type ReactNode } from "react";
+import dayjs from "dayjs";
+import {
+  createContext,
+  useContext,
+  useState,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+} from "react";
+import type { DateRange } from "react-day-picker";
 
 interface ChartSettingsContextType {
   area: string;
   setArea: (area: string) => void;
   timeUnit: TimeUnit;
   setTimeUnit: (timeUnit: TimeUnit) => void;
+  dateRange: DateRange | undefined;
+  setDateRange: Dispatch<SetStateAction<DateRange | undefined>>;
+  availableRange: { min: Date | null; max: Date | null };
+  setAvailableRange: Dispatch<
+    SetStateAction<{ min: Date | null; max: Date | null }>
+  >;
 }
 
 const ChartSettingsContext = createContext<
@@ -19,10 +34,30 @@ export const ChartSettingsProvider = ({
 }) => {
   const [area, setArea] = useState("total_daily_metrics.csv");
   const [timeUnit, setTimeUnit] = useState<TimeUnit>("day");
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: dayjs().subtract(3, "month").toDate(),
+    to: dayjs().subtract(1, "day").toDate(),
+  });
+  const [availableRange, setAvailableRange] = useState<{
+    min: Date | null;
+    max: Date | null;
+  }>({
+    min: null,
+    max: dayjs().subtract(1, "day").toDate(),
+  });
 
   return (
     <ChartSettingsContext.Provider
-      value={{ area, setArea, timeUnit, setTimeUnit }}
+      value={{
+        area,
+        setArea,
+        timeUnit,
+        setTimeUnit,
+        dateRange,
+        setDateRange,
+        availableRange,
+        setAvailableRange,
+      }}
     >
       {children}
     </ChartSettingsContext.Provider>
