@@ -1,4 +1,5 @@
 import { useChartSettings } from "@/context/ChartSettingsContext";
+import type { DateRangeVariant } from "@/types/types";
 import dayjs from "dayjs";
 import minMax from "dayjs/plugin/minMax";
 import { useEffect, useState } from "react";
@@ -8,7 +9,7 @@ import { useMetricsData } from "./hooks/use-metrics-data";
 import { aggregateData } from "./utils";
 dayjs.extend(minMax);
 
-export function Graph() {
+export function Graph({ variant = "primary" }: { variant: DateRangeVariant }) {
   const { area, timeUnit, dateRange, setAvailableRange } = useChartSettings();
   const { data } = useMetricsData(area);
 

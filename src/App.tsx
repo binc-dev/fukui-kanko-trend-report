@@ -50,7 +50,10 @@ function MainContent() {
         </div>
       </div>
 
-      <Graph />
+      <div className="flex flex-row gap-4 w-full ">
+        <Graph variant="primary" />
+        {isComparison && <Graph variant="comparison" />}
+      </div>
     </div>
   );
 }
