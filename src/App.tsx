@@ -42,9 +42,9 @@ function MainContent() {
         <div className="flex flex-row items-center w-full">
           <div className="flex-1" />
           <div className="flex flex-row items-center gap-[68px] pl-2">
-            <DateRangePicker />
+            <DateRangePicker variant="primary" />
 
-            {isComparison && <DateRangePicker />}
+            {isComparison && <DateRangePicker variant="comparison" />}
           </div>
           <div className="flex-1 flex flex-row items-center gap-2 pl-2"></div>
         </div>

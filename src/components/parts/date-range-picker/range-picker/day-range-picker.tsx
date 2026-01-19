@@ -6,13 +6,29 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useChartSettings } from "@/context/ChartSettingsContext";
+import type { DateRangeVariant } from "@/types/types";
 import { CalendarIcon } from "@primer/octicons-react";
 import { ja } from "date-fns/locale";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-export function DayRangePicker() {
-  const { dateRange, setDateRange, availableRange } = useChartSettings();
+export function DayRangePicker({
+  variant = "primary",
+}: {
+  variant: DateRangeVariant;
+}) {
+  const {
+    dateRange,
+    setDateRange,
+    comparisonRange,
+    setComparisonRange,
+    availableRange,
+  } = useChartSettings();
+
+  const currentRange = variant === "primary" ? dateRange : comparisonRange;
+  const currentSetter =
+    variant === "primary" ? setDateRange : setComparisonRange;
+
   const [isStartOpen, setIsStartOpen] = useState(false);
   const [isEndOpen, setIsEndOpen] = useState(false);
 
@@ -29,8 +45,8 @@ export function DayRangePicker() {
               variant="outline"
               className="w-48 justify-between font-normal border-black"
             >
-              {dateRange?.from ? (
-                dayjs(dateRange.from).format("YYYY/MM/DD")
+              {currentRange?.from ? (
+                dayjs(currentRange.from).format("YYYY/MM/DD")
               ) : (
                 <span>開始日を選択</span>
               )}
@@ -41,12 +57,12 @@ export function DayRangePicker() {
             <Calendar
               locale={ja}
               mode="single"
-              defaultMonth={dateRange?.from}
+              defaultMonth={currentRange?.from}
               startMonth={min}
               endMonth={max}
-              selected={dateRange?.from}
+              selected={currentRange?.from}
               onSelect={(newFrom) => {
-                setDateRange((prev) => {
+                currentSetter((prev) => {
                   const shouldResetTo =
                     prev?.to &&
                     newFrom &&
@@ -77,10 +93,10 @@ export function DayRangePicker() {
             <Button
               variant="outline"
               className="w-48 justify-between font-normal border-black"
-              disabled={!dateRange?.from}
+              disabled={!currentRange?.from}
             >
-              {dateRange?.to ? (
-                dayjs(dateRange.to).format("YYYY/MM/DD")
+              {currentRange?.to ? (
+                dayjs(currentRange.to).format("YYYY/MM/DD")
               ) : (
                 <span>終了日を選択</span>
               )}
@@ -91,12 +107,12 @@ export function DayRangePicker() {
             <Calendar
               locale={ja}
               mode="single"
-              defaultMonth={dateRange?.to}
-              startMonth={dateRange?.from ?? min}
+              defaultMonth={currentRange?.to}
+              startMonth={currentRange?.from ?? min}
               endMonth={max}
-              selected={dateRange?.to}
+              selected={currentRange?.to}
               onSelect={(date) => {
-                setDateRange((prev) => ({
+                currentSetter((prev) => ({
                   ...prev,
                   from: prev?.from,
                   to: date,
@@ -106,7 +122,9 @@ export function DayRangePicker() {
               disabled={(date) =>
                 (min ? dayjs(date).isBefore(min, "day") : false) ||
                 (max ? dayjs(date).isAfter(max, "day") : false) ||
-                (dateRange?.from ? dayjs(date).isBefore(dateRange.from) : false)
+                (currentRange?.from
+                  ? dayjs(date).isBefore(currentRange.from)
+                  : false)
               }
               className="rounded-md border shadow-sm"
               captionLayout="dropdown"

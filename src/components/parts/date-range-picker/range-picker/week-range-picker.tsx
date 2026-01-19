@@ -6,6 +6,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useChartSettings } from "@/context/ChartSettingsContext";
+import type { DateRangeVariant } from "@/types/types";
 import { CalendarIcon } from "@primer/octicons-react";
 import { ja } from "date-fns/locale";
 import dayjs from "dayjs";
@@ -15,8 +16,23 @@ import { useInitialRangeAdjustment } from "../hooks/useInitialRangeAdjustment";
 import { getWeekRange } from "../utils";
 dayjs.extend(isoWeek);
 
-export function WeekRangePicker() {
-  const { dateRange, setDateRange, availableRange } = useChartSettings();
+export function WeekRangePicker({
+  variant = "primary",
+}: {
+  variant: DateRangeVariant;
+}) {
+  const {
+    dateRange,
+    setDateRange,
+    comparisonRange,
+    setComparisonRange,
+    availableRange,
+  } = useChartSettings();
+
+  const currentRange = variant === "primary" ? dateRange : comparisonRange;
+  const currentSetter =
+    variant === "primary" ? setDateRange : setComparisonRange;
+
   const [isStartOpen, setIsStartOpen] = useState(false);
   const [isEndOpen, setIsEndOpen] = useState(false);
 
@@ -24,7 +40,13 @@ export function WeekRangePicker() {
   const max = availableRange.max ?? undefined;
 
   // 表示単位を切り替えた時に範囲を週の範囲に調整する
-  useInitialRangeAdjustment(dateRange, setDateRange, min, max, getWeekRange);
+  useInitialRangeAdjustment(
+    currentRange,
+    currentSetter,
+    min,
+    max,
+    getWeekRange
+  );
 
   // 週選択時の処理
   function handleWeekSelect(
@@ -64,8 +86,8 @@ export function WeekRangePicker() {
               variant="outline"
               className="w-48 justify-between font-normal border-black"
             >
-              {dateRange?.from ? (
-                dayjs(dateRange.from).format("YYYY/MM/DD週")
+              {currentRange?.from ? (
+                dayjs(currentRange.from).format("YYYY/MM/DD週")
               ) : (
                 <span>開始週を選択</span>
               )}
@@ -76,17 +98,17 @@ export function WeekRangePicker() {
             <Calendar
               locale={ja}
               mode="range"
-              defaultMonth={dateRange?.from}
+              defaultMonth={currentRange?.from}
               startMonth={min}
               endMonth={max}
               selected={
-                dateRange?.from
-                  ? getWeekRange(dateRange.from, min, max)
+                currentRange?.from
+                  ? getWeekRange(currentRange.from, min, max)
                   : undefined
               }
               onSelect={(range) => {
-                handleWeekSelect(range, dateRange, true, (newRange) =>
-                  setDateRange((prev) => {
+                handleWeekSelect(range, currentRange, true, (newRange) =>
+                  currentSetter((prev) => {
                     const shouldResetTo =
                       prev?.to &&
                       newRange &&
@@ -118,10 +140,10 @@ export function WeekRangePicker() {
             <Button
               variant="outline"
               className="w-48 justify-between font-normal border-black"
-              disabled={!dateRange?.from}
+              disabled={!currentRange?.from}
             >
-              {dateRange?.to ? (
-                dayjs(getWeekRange(dateRange.to, min, max).from).format(
+              {currentRange?.to ? (
+                dayjs(getWeekRange(currentRange.to, min, max).from).format(
                   "YYYY/MM/DD週"
                 )
               ) : (
@@ -134,20 +156,20 @@ export function WeekRangePicker() {
             <Calendar
               locale={ja}
               mode="range"
-              defaultMonth={dateRange?.to}
-              startMonth={dateRange?.from ?? min}
+              defaultMonth={currentRange?.to}
+              startMonth={currentRange?.from ?? min}
               endMonth={max}
               selected={
-                dateRange?.to
+                currentRange?.to
                   ? {
-                      from: getWeekRange(dateRange.to, min, max).from,
-                      to: getWeekRange(dateRange.to, min, max).to,
+                      from: getWeekRange(currentRange.to, min, max).from,
+                      to: getWeekRange(currentRange.to, min, max).to,
                     }
                   : undefined
               }
               onSelect={(range) => {
-                handleWeekSelect(range, dateRange, false, (newRange) =>
-                  setDateRange((prev) => ({
+                handleWeekSelect(range, currentRange, false, (newRange) =>
+                  currentSetter((prev) => ({
                     ...prev,
                     from: prev?.from,
                     to: newRange?.to,
@@ -158,7 +180,9 @@ export function WeekRangePicker() {
               disabled={(date) =>
                 (min ? dayjs(date).isBefore(min, "day") : false) ||
                 (max ? dayjs(date).isAfter(max, "day") : false) ||
-                (dateRange?.from ? dayjs(date).isBefore(dateRange.from) : false)
+                (currentRange?.from
+                  ? dayjs(date).isBefore(currentRange.from)
+                  : false)
               }
               className="rounded-md border shadow-sm"
               captionLayout="dropdown"
