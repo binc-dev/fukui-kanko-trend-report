@@ -10,8 +10,11 @@ import { aggregateData } from "./utils";
 dayjs.extend(minMax);
 
 export function Graph({ variant = "primary" }: { variant: DateRangeVariant }) {
-  const { area, timeUnit, dateRange, setAvailableRange } = useChartSettings();
+  const { area, timeUnit, dateRange, comparisonRange, setAvailableRange } =
+    useChartSettings();
   const { data } = useMetricsData(area);
+
+  const currentRange = variant === "primary" ? dateRange : comparisonRange;
 
   useEffect(() => {
     if (!data?.length) return;
@@ -26,7 +29,7 @@ export function Graph({ variant = "primary" }: { variant: DateRangeVariant }) {
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());
 
-  if (!data || !dateRange?.from || !dateRange?.to) {
+  if (!data || !currentRange?.from || !currentRange?.to) {
     return (
       <div className="w-full flex items-center justify-center h-64 text-gray-500">
         <p className="text-lg">表示したい期間を設定してください。</p>
@@ -34,8 +37,8 @@ export function Graph({ variant = "primary" }: { variant: DateRangeVariant }) {
     );
   }
 
-  const start = dayjs(dateRange.from).startOf("day");
-  const end = dayjs(dateRange.to).endOf("day");
+  const start = dayjs(currentRange.from).startOf("day");
+  const end = dayjs(currentRange.to).endOf("day");
 
   const filteredData = data.filter((item) => {
     const itemDate = dayjs(item.date);
