@@ -15,7 +15,7 @@ export function AreaSelector() {
   const { area, setArea } = useChartSettings();
   const { areas } = useAreas();
   return (
-    <div className="flex flex-row items-center gap-2 mt-3">
+    <div className="flex flex-row items-center gap-2">
       <p>エリア</p>
       <Select value={area} onValueChange={setArea}>
         <SelectTrigger className="w-30 bg-white text-black border-black hover:bg-gray-100">

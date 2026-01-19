@@ -10,7 +10,7 @@ import { useChartSettings } from "@/context/ChartSettingsContext";
 export function TimeUnitSelector() {
   const { timeUnit, setTimeUnit } = useChartSettings();
   return (
-    <div className="flex flex-row items-center gap-2 mt-3">
+    <div className="flex flex-row items-center gap-2 pl-4">
       <p>表示単位</p>
       <Select value={timeUnit} onValueChange={setTimeUnit}>
         <SelectTrigger className="w-30 bg-white text-black border-black hover:bg-gray-100">
