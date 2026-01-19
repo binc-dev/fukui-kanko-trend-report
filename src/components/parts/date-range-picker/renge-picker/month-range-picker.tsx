@@ -7,7 +7,8 @@ import {
 import { useChartSettings } from "@/context/ChartSettingsContext";
 import { CalendarIcon } from "@primer/octicons-react";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useInitialRangeAdjustment } from "../hooks/useInitialRangeAdjustment";
 import { getMonthRange } from "../utils";
 import { MonthPicker } from "./month-picker.component";
 
@@ -19,27 +20,8 @@ export function MonthRangePicker() {
   const min = availableRange.min ?? undefined;
   const max = availableRange.max ?? undefined;
 
-  useEffect(() => {
-    if (!dateRange) return;
-
-    const startOfMonth = dateRange.from
-      ? getMonthRange(dateRange.from, min, max).from
-      : undefined;
-
-    const endOfMonth = dateRange.to
-      ? getMonthRange(dateRange.to, min, max).to
-      : undefined;
-
-    if (
-      !dayjs(dateRange.from).isSame(startOfMonth, "day") ||
-      !dayjs(dateRange.to).isSame(endOfMonth, "day")
-    ) {
-      setDateRange({
-        from: startOfMonth,
-        to: endOfMonth,
-      });
-    }
-  }, []);
+  // 表示単位を切り替えた時に範囲を月の範囲に調整する
+  useInitialRangeAdjustment(dateRange, setDateRange, min, max, getMonthRange);
 
   return (
     <div className="flex flex-row gap-6">

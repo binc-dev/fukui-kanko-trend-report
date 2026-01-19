@@ -10,7 +10,8 @@ import { CalendarIcon } from "@primer/octicons-react";
 import { ja } from "date-fns/locale";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useInitialRangeAdjustment } from "../hooks/useInitialRangeAdjustment";
 import { getWeekRange } from "../utils";
 dayjs.extend(isoWeek);
 
@@ -22,28 +23,10 @@ export function WeekRangePicker() {
   const min = availableRange.min ?? undefined;
   const max = availableRange.max ?? undefined;
 
-  useEffect(() => {
-    if (!dateRange) return;
+  // 表示単位を切り替えた時に範囲を週の範囲に調整する
+  useInitialRangeAdjustment(dateRange, setDateRange, min, max, getWeekRange);
 
-    const startOfWeek = dateRange.from
-      ? getWeekRange(dateRange.from, min, max).from
-      : undefined;
-
-    const endOfWeek = dateRange.to
-      ? getWeekRange(dateRange.to, min, max).to
-      : undefined;
-
-    if (
-      !dayjs(dateRange.from).isSame(startOfWeek, "day") ||
-      !dayjs(dateRange.to).isSame(endOfWeek, "day")
-    ) {
-      setDateRange({
-        from: startOfWeek,
-        to: endOfWeek,
-      });
-    }
-  }, []);
-
+  // 週選択時の処理
   function handleWeekSelect(
     date: { from?: Date; to?: Date } | undefined,
     current: { from?: Date; to?: Date } | undefined,
