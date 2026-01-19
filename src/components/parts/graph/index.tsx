@@ -13,13 +13,11 @@ export function Graph() {
   const { data } = useMetricsData(area);
 
   useEffect(() => {
-    if (data && data.length > 0) {
-      const dates = data.map((d) => dayjs(d.date));
-      const minDate = dayjs.min(dates);
+    if (!data?.length) return;
 
-      if (minDate) {
-        setAvailableRange((prev) => ({ ...prev, min: minDate.toDate() }));
-      }
+    const minDate = dayjs.min(data.map((d) => dayjs(d.date)));
+    if (minDate) {
+      setAvailableRange((prev) => ({ ...prev, min: minDate.toDate() }));
     }
   }, [data, setAvailableRange]);
 
@@ -27,7 +25,7 @@ export function Graph() {
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());
 
-  if (!dateRange?.from || !dateRange?.to) {
+  if (!data || !dateRange?.from || !dateRange?.to) {
     return (
       <div className="w-full flex items-center justify-center h-64 text-gray-500">
         <p className="text-lg">表示したい期間を設定してください。</p>
@@ -35,20 +33,16 @@ export function Graph() {
     );
   }
 
-  const filteredData = (() => {
-    if (!data || !dateRange?.from || !dateRange?.to) return [];
+  const start = dayjs(dateRange.from).startOf("day");
+  const end = dayjs(dateRange.to).endOf("day");
 
-    const start = dayjs(dateRange.from).startOf("day");
-    const end = dayjs(dateRange.to).endOf("day");
-
-    return data.filter((item) => {
-      const itemDate = dayjs(item.date);
-      return (
-        (itemDate.isAfter(start) || itemDate.isSame(start)) &&
-        (itemDate.isBefore(end) || itemDate.isSame(end))
-      );
-    });
-  })();
+  const filteredData = data.filter((item) => {
+    const itemDate = dayjs(item.date);
+    return (
+      (itemDate.isAfter(start) || itemDate.isSame(start)) &&
+      (itemDate.isBefore(end) || itemDate.isSame(end))
+    );
+  });
 
   const chartData = aggregateData(filteredData, timeUnit);
 
