@@ -4,11 +4,7 @@ import { DayRangePicker } from "./range-picker/day-range-picker";
 import { MonthRangePicker } from "./range-picker/month-range-picker";
 import { WeekRangePicker } from "./range-picker/week-range-picker";
 
-export function DateRangePicker({
-  variant = "primary",
-}: {
-  variant: DateRangeVariant;
-}) {
+export function DateRangePicker({ variant }: { variant: DateRangeVariant }) {
   const { timeUnit } = useChartSettings();
 
   return timeUnit === "day" ? (

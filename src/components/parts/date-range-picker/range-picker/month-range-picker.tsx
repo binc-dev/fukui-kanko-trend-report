@@ -13,11 +13,7 @@ import { useInitialRangeAdjustment } from "../hooks/useInitialRangeAdjustment";
 import { getMonthRange } from "../utils";
 import { MonthPicker } from "./month-picker.component";
 
-export function MonthRangePicker({
-  variant = "primary",
-}: {
-  variant: DateRangeVariant;
-}) {
+export function MonthRangePicker({ variant }: { variant: DateRangeVariant }) {
   const {
     dateRange,
     setDateRange,
@@ -42,7 +38,7 @@ export function MonthRangePicker({
     currentSetter,
     min,
     max,
-    getMonthRange
+    getMonthRange,
   );
 
   return (

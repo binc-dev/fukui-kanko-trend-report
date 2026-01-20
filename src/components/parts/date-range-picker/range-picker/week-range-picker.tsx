@@ -16,11 +16,7 @@ import { useInitialRangeAdjustment } from "../hooks/useInitialRangeAdjustment";
 import { getWeekRange } from "../utils";
 dayjs.extend(isoWeek);
 
-export function WeekRangePicker({
-  variant = "primary",
-}: {
-  variant: DateRangeVariant;
-}) {
+export function WeekRangePicker({ variant }: { variant: DateRangeVariant }) {
   const {
     dateRange,
     setDateRange,
@@ -45,7 +41,7 @@ export function WeekRangePicker({
     currentSetter,
     min,
     max,
-    getWeekRange
+    getWeekRange,
   );
 
   // 週選択時の処理
@@ -53,7 +49,7 @@ export function WeekRangePicker({
     date: { from?: Date; to?: Date } | undefined,
     current: { from?: Date; to?: Date } | undefined,
     isStartWeek: boolean,
-    setRange: (range: { from: Date; to: Date } | undefined) => void
+    setRange: (range: { from: Date; to: Date } | undefined) => void,
   ) {
     if (!date?.from) return;
 
@@ -118,7 +114,7 @@ export function WeekRangePicker({
                       from: newRange?.from,
                       to: shouldResetTo ? undefined : prev?.to,
                     };
-                  })
+                  }),
                 );
                 setIsStartOpen(false);
               }}
@@ -144,7 +140,7 @@ export function WeekRangePicker({
             >
               {currentRange?.to ? (
                 dayjs(getWeekRange(currentRange.to, min, max).from).format(
-                  "YYYY/MM/DD週"
+                  "YYYY/MM/DD週",
                 )
               ) : (
                 <span>終了週を選択</span>
@@ -173,7 +169,7 @@ export function WeekRangePicker({
                     ...prev,
                     from: prev?.from,
                     to: newRange?.to,
-                  }))
+                  })),
                 );
                 setIsEndOpen(false);
               }}

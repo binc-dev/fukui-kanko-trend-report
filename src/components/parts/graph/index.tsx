@@ -9,7 +9,7 @@ import { useMetricsData } from "./hooks/use-metrics-data";
 import { aggregateData } from "./utils";
 dayjs.extend(minMax);
 
-export function Graph({ variant = "primary" }: { variant: DateRangeVariant }) {
+export function Graph({ variant }: { variant: DateRangeVariant }) {
   const { area, timeUnit, dateRange, comparisonRange, setAvailableRange } =
     useChartSettings();
   const { data } = useMetricsData(area);

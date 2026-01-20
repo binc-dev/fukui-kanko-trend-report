@@ -12,11 +12,7 @@ import { ja } from "date-fns/locale";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-export function DayRangePicker({
-  variant = "primary",
-}: {
-  variant: DateRangeVariant;
-}) {
+export function DayRangePicker({ variant }: { variant: DateRangeVariant }) {
   const {
     dateRange,
     setDateRange,
