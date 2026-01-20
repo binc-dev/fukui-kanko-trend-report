@@ -45,6 +45,7 @@ export function ReviewTrendChart({
           orientation="left"
           tick={{ fontSize: 12 }}
           tickCount={5}
+          allowDecimals={false}
         />
         <YAxis
           yAxisId="right"
