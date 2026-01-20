@@ -4,12 +4,9 @@ import { Header } from "@/components/parts/header";
 import { AreaSelector } from "@/components/parts/selector/area-selector";
 import { TimeUnitSelector } from "@/components/parts/selector/time-unit-selector";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  ChartSettingsProvider,
-  useChartSettings,
-} from "@/context/ChartSettingsContext";
+import { useChartSettings } from "@/context/ChartSettingsContext";
 
-function MainContent() {
+function App() {
   const { isComparison, setIsComparison } = useChartSettings();
 
   return (
@@ -53,14 +50,6 @@ function MainContent() {
         {isComparison && <Graph variant="comparison" />}
       </div>
     </div>
-  );
-}
-
-function App() {
-  return (
-    <ChartSettingsProvider>
-      <MainContent />
-    </ChartSettingsProvider>
   );
 }
 
