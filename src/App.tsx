@@ -39,14 +39,12 @@ function MainContent() {
             <label htmlFor="comparison">2期間比較</label>
           </div>
         </div>
-        <div className="flex flex-row items-center w-full">
-          <div className="flex-1" />
-          <div className="flex flex-row items-center gap-[68px] pl-2">
+        <div className=" items-center ">
+          <div className="flex flex-row w-full justify-around">
             <DateRangePicker variant="primary" />
 
             {isComparison && <DateRangePicker variant="comparison" />}
           </div>
-          <div className="flex-1 flex flex-row items-center gap-2 pl-2"></div>
         </div>
       </div>
 
