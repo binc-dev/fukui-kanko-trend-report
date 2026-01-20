@@ -15,8 +15,12 @@ interface ChartSettingsContextType {
   setArea: (area: string) => void;
   timeUnit: TimeUnit;
   setTimeUnit: (timeUnit: TimeUnit) => void;
+  isComparison: boolean;
+  setIsComparison: (isComparison: boolean) => void;
   dateRange: DateRange | undefined;
   setDateRange: Dispatch<SetStateAction<DateRange | undefined>>;
+  comparisonRange: DateRange | undefined;
+  setComparisonRange: Dispatch<SetStateAction<DateRange | undefined>>;
   availableRange: { min: Date | null; max: Date | null };
   setAvailableRange: Dispatch<
     SetStateAction<{ min: Date | null; max: Date | null }>
@@ -34,10 +38,17 @@ export const ChartSettingsProvider = ({
 }) => {
   const [area, setArea] = useState("total_daily_metrics.csv");
   const [timeUnit, setTimeUnit] = useState<TimeUnit>("day");
+  const [isComparison, setIsComparison] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: dayjs().subtract(3, "month").toDate(),
     to: dayjs().subtract(1, "day").toDate(),
   });
+  const [comparisonRange, setComparisonRange] = useState<DateRange | undefined>(
+    {
+      from: dayjs().subtract(3, "month").toDate(),
+      to: dayjs().subtract(1, "day").toDate(),
+    }
+  );
   const [availableRange, setAvailableRange] = useState<{
     min: Date | null;
     max: Date | null;
@@ -53,8 +64,12 @@ export const ChartSettingsProvider = ({
         setArea,
         timeUnit,
         setTimeUnit,
+        isComparison,
+        setIsComparison,
         dateRange,
         setDateRange,
+        comparisonRange,
+        setComparisonRange,
         availableRange,
         setAvailableRange,
       }}

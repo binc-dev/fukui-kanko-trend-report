@@ -5,6 +5,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useChartSettings } from "@/context/ChartSettingsContext";
+import type { DateRangeVariant } from "@/types/types";
 import { CalendarIcon } from "@primer/octicons-react";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -12,8 +13,19 @@ import { useInitialRangeAdjustment } from "../hooks/useInitialRangeAdjustment";
 import { getMonthRange } from "../utils";
 import { MonthPicker } from "./month-picker.component";
 
-export function MonthRangePicker() {
-  const { dateRange, setDateRange, availableRange } = useChartSettings();
+export function MonthRangePicker({ variant }: { variant: DateRangeVariant }) {
+  const {
+    dateRange,
+    setDateRange,
+    comparisonRange,
+    setComparisonRange,
+    availableRange,
+  } = useChartSettings();
+
+  const currentRange = variant === "primary" ? dateRange : comparisonRange;
+  const currentSetter =
+    variant === "primary" ? setDateRange : setComparisonRange;
+
   const [isStartOpen, setIsStartOpen] = useState(false);
   const [isEndOpen, setIsEndOpen] = useState(false);
 
@@ -21,7 +33,13 @@ export function MonthRangePicker() {
   const max = availableRange.max ?? undefined;
 
   // 表示単位を切り替えた時に範囲を月の範囲に調整する
-  useInitialRangeAdjustment(dateRange, setDateRange, min, max, getMonthRange);
+  useInitialRangeAdjustment(
+    currentRange,
+    currentSetter,
+    min,
+    max,
+    getMonthRange,
+  );
 
   return (
     <div className="flex flex-row gap-6">
@@ -33,8 +51,8 @@ export function MonthRangePicker() {
               variant="outline"
               className="w-48 justify-between font-normal border-black"
             >
-              {dateRange?.from ? (
-                dayjs(dateRange.from).format("YYYY/MM")
+              {currentRange?.from ? (
+                dayjs(currentRange.from).format("YYYY/MM")
               ) : (
                 <span>開始月を選択</span>
               )}
@@ -43,17 +61,16 @@ export function MonthRangePicker() {
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <MonthPicker
-              selected={dateRange?.from}
+              selected={currentRange?.from}
               onChange={(date) => {
                 const isSame =
-                  dateRange?.from &&
-                  dayjs(date).isSame(dayjs(dateRange.from), "month");
-
+                  currentRange?.from &&
+                  dayjs(date).isSame(dayjs(currentRange.from), "month");
                 if (isSame) {
-                  setDateRange((prev) => ({ ...prev, from: undefined }));
+                  currentSetter((prev) => ({ ...prev, from: undefined }));
                 } else {
                   const { from: startDate } = getMonthRange(date, min, max);
-                  setDateRange((prev) => {
+                  currentSetter((prev) => {
                     const shouldResetTo =
                       prev?.to &&
                       dayjs(startDate).isAfter(dayjs(prev.to), "month");
@@ -78,10 +95,10 @@ export function MonthRangePicker() {
             <Button
               variant="outline"
               className="w-48 justify-between font-normal border-black"
-              disabled={!dateRange?.from}
+              disabled={!currentRange?.from}
             >
-              {dateRange?.to ? (
-                dayjs(dateRange.to).format("YYYY/MM")
+              {currentRange?.to ? (
+                dayjs(currentRange.to).format("YYYY/MM")
               ) : (
                 <span>終了月を選択</span>
               )}
@@ -90,22 +107,22 @@ export function MonthRangePicker() {
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <MonthPicker
-              selected={dateRange?.to}
-              min={dateRange?.from}
+              selected={currentRange?.to}
+              min={currentRange?.from}
               onChange={(date) => {
                 const isSameAsCurrent =
-                  dateRange?.to &&
-                  dayjs(date).isSame(dayjs(dateRange.to), "month");
+                  currentRange?.to &&
+                  dayjs(date).isSame(dayjs(currentRange.to), "month");
 
                 if (isSameAsCurrent) {
-                  setDateRange((prev) => ({
+                  currentSetter((prev) => ({
                     ...prev,
                     from: prev?.from,
                     to: undefined,
                   }));
                 } else {
                   const { to: endDate } = getMonthRange(date, min, max);
-                  setDateRange((prev) => ({
+                  currentSetter((prev) => ({
                     ...prev,
                     from: prev?.from,
                     to: endDate,

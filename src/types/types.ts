@@ -19,3 +19,5 @@ export type ChartMetric = {
 };
 
 export type TimeUnit = "day" | "week" | "month";
+
+export type DateRangeVariant = "primary" | "comparison";

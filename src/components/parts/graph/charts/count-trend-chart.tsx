@@ -1,8 +1,9 @@
 import {
+  Bar,
   CartesianGrid,
+  ComposedChart,
   Legend,
   Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -32,7 +33,7 @@ export function CountTrendChart({
 }) {
   return (
     <ResponsiveContainer width="100%" height={450}>
-      <LineChart data={data} margin={{ top: 12, right: 60 }}>
+      <ComposedChart data={data} margin={{ top: 12, right: 60 }}>
         <CartesianGrid strokeOpacity={0.3} vertical={false} />
         <XAxis
           dataKey="date"
@@ -43,6 +44,9 @@ export function CountTrendChart({
         <YAxis tick={{ fontSize: 12 }} />
         <Tooltip content={<CustomTooltipContent chartType="count" />} />
         <Legend
+          wrapperStyle={{
+            width: "100%",
+          }}
           content={
             <CustomLegendContent
               hoveredKey={hoveredKey}
@@ -53,13 +57,14 @@ export function CountTrendChart({
             />
           }
         />
+        <Bar dataKey="hidden" barSize={0} legendType="none" />
         {COUNT_TREND_METRICS.map((metric) => (
           <Line
             key={metric.id}
             {...getChartProps(metric, hoveredKey, hiddenKeys)}
           />
         ))}
-      </LineChart>
+      </ComposedChart>
     </ResponsiveContainer>
   );
 }
