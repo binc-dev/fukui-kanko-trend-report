@@ -43,6 +43,9 @@ export function CountTrendChart({
         <YAxis tick={{ fontSize: 12 }} />
         <Tooltip content={<CustomTooltipContent chartType="count" />} />
         <Legend
+          wrapperStyle={{
+            width: "100%",
+          }}
           content={
             <CustomLegendContent
               hoveredKey={hoveredKey}
