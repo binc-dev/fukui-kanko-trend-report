@@ -36,7 +36,7 @@ function App() {
             <label htmlFor="comparison">2期間比較</label>
           </div>
         </div>
-        <div className=" items-center ">
+        <div className="items-center">
           <div className="flex flex-row w-full justify-around gap-3.5">
             <DateRangePicker variant="primary" />
 
@@ -45,7 +45,7 @@ function App() {
         </div>
       </div>
 
-      <div className="flex flex-row gap-4 w-full ">
+      <div className="flex flex-row gap-4 w-full">
         <Graph variant="primary" />
         {isComparison && <Graph variant="comparison" />}
       </div>
