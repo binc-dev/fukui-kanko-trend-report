@@ -11,7 +11,7 @@ export const CustomXAxisTick = ({ x, y, payload }: CustomXAxisTickProps) => {
   if (!payload?.value) return null;
   const { formattedDate, displayText, color } = getDateInfo(
     payload.value,
-    timeUnit
+    timeUnit,
   );
 
   return (
@@ -34,9 +34,14 @@ export const CustomTooltipContent = ({
 }: CustomTooltipContentProps) => {
   const { timeUnit } = useChartSettings();
   if (!active || !payload?.length) return null;
+
+  const filteredPayload = payload.filter((item) => item.dataKey !== "hidden");
+
+  if (filteredPayload.length === 0) return null;
+
   const { formattedDate, displayText, color } = getDateInfo(
-    payload[0].payload.date,
-    timeUnit
+    filteredPayload[0].payload.date,
+    timeUnit,
   );
 
   return (
@@ -50,8 +55,8 @@ export const CustomTooltipContent = ({
       <div className="grid gap-1.5">
         {[
           ...(chartType === "count"
-            ? payload.slice().sort((a, b) => b.value - a.value)
-            : payload),
+            ? filteredPayload.slice().sort((a, b) => b.value - a.value)
+            : filteredPayload),
         ].map((item) => (
           <div key={item.dataKey} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between gap-4">
@@ -111,11 +116,13 @@ export const CustomLegendContent = ({
   ];
 
   // payloadをdesiredOrderの順序でソート
-  const sortedPayload = payload?.slice().sort((a, b) => {
-    const indexA = desiredOrder.indexOf(a.dataKey);
-    const indexB = desiredOrder.indexOf(b.dataKey);
-    return indexA - indexB;
-  });
+  const sortedPayload = payload
+    ?.filter((entry) => entry.dataKey !== "hidden")
+    .sort((a, b) => {
+      const indexA = desiredOrder.indexOf(a.dataKey);
+      const indexB = desiredOrder.indexOf(b.dataKey);
+      return indexA - indexB;
+    });
   return (
     <ul className="flex flex-wrap justify-center gap-4 list-none m-0 p-0">
       {sortedPayload?.map((entry) => {
@@ -123,8 +130,8 @@ export const CustomLegendContent = ({
         const opacity = isHidden
           ? 0.2
           : hoveredKey && hoveredKey !== entry.dataKey
-          ? 0.2
-          : 1;
+            ? 0.2
+            : 1;
 
         return (
           <li

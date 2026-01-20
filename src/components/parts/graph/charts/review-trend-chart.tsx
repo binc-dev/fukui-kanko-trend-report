@@ -39,7 +39,12 @@ export function ReviewTrendChart({
           strokeOpacity={0.3}
           yAxisId={hiddenKeys.has("review_count_change") ? "right" : "left"}
         />
-        <XAxis dataKey="date" tick={<CustomXAxisTick />} height={60} />
+        <XAxis
+          dataKey="date"
+          tick={<CustomXAxisTick />}
+          height={60}
+          minTickGap={20}
+        />
         <YAxis
           yAxisId="left"
           orientation="left"
