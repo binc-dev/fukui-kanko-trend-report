@@ -40,7 +40,7 @@ function MainContent() {
           </div>
         </div>
         <div className=" items-center ">
-          <div className="flex flex-row w-full justify-around">
+          <div className="flex flex-row w-full justify-around gap-3.5">
             <DateRangePicker variant="primary" />
 
             {isComparison && <DateRangePicker variant="comparison" />}
