@@ -5,6 +5,7 @@ import { AreaSelector } from "@/components/parts/selector/area-selector";
 import { TimeUnitSelector } from "@/components/parts/selector/time-unit-selector";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useChartSettings } from "@/context/ChartSettingsContext";
+import { DownloadCSVButton } from "./components/parts/download-csv-button";
 
 function App() {
   const { isComparison, setIsComparison } = useChartSettings();
@@ -36,12 +37,27 @@ function App() {
             <label htmlFor="comparison">2期間比較</label>
           </div>
         </div>
-        <div className="items-center">
-          <div className="flex flex-row w-full justify-around gap-3.5">
-            <DateRangePicker variant="primary" />
-
-            {isComparison && <DateRangePicker variant="comparison" />}
+        <div className="flex flex-row justify-around w-full gap-3.5">
+          <div className="flex flex-row items-end w-full">
+            <div className="flex-1" />
+            <div className="flex flex-row items-end pl-4">
+              <DateRangePicker variant="primary" />
+            </div>
+            <div className="flex-1 flex flex-row items-end gap-2 pl-4">
+              <DownloadCSVButton />
+            </div>
           </div>
+          {isComparison && (
+            <div className="flex flex-row items-end w-full">
+              <div className="flex-1" />
+              <div className="flex flex-row items-end pl-4">
+                <DateRangePicker variant="comparison" />
+              </div>
+              <div className="flex-1 flex flex-row items-end gap-2 pl-4">
+                <DownloadCSVButton />
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
