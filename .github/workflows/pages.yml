@@ -3,6 +3,9 @@ name: Build site, and Deploy site to Pages
 on:
   # 手動実行
   workflow_dispatch:
+  # mainブランチへのpush
+  push:
+    branches: ["main"]
 
 # GitHub Pagesへのデプロイを許可
 permissions:
@@ -14,9 +17,14 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+env:
+  IS_ORIGINAL_REPO: ${{ github.repository == 'code4fukui/fukui-kanko-trend-report' }}
+  IS_MAIN_BRANCH: ${{ github.ref == 'refs/heads/main' }}
+
 jobs:
   # Vite+Reactのサイトをビルド
   build:
+    if: env.IS_ORIGINAL_REPO == 'true' && env.IS_MAIN_BRANCH == 'true'
     runs-on: ubuntu-latest
     env:
       TZ: "Asia/Tokyo"
@@ -43,6 +51,7 @@ jobs:
 
   # GitHub Pagesへデプロイ
   deploy-pages:
+    if: env.IS_ORIGINAL_REPO == 'true' && env.IS_MAIN_BRANCH == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
