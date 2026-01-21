@@ -44,7 +44,7 @@ function App() {
               <DateRangePicker variant="primary" />
             </div>
             <div className="flex-1 flex flex-row items-end gap-2 pl-4">
-              <DownloadCSVButton />
+              <DownloadCSVButton variant="primary" />
             </div>
           </div>
           {isComparison && (
@@ -54,7 +54,7 @@ function App() {
                 <DateRangePicker variant="comparison" />
               </div>
               <div className="flex-1 flex flex-row items-end gap-2 pl-4">
-                <DownloadCSVButton />
+                <DownloadCSVButton variant="comparison" />
               </div>
             </div>
           )}
