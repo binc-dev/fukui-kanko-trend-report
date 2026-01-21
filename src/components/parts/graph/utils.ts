@@ -42,7 +42,7 @@ export const getDateInfo = (dateStr: string, timeUnit: TimeUnit) => {
 export const getChartProps = (
   metric: ChartMetric,
   hoveredKey: string | null,
-  hiddenKeys: Set<string>
+  hiddenKeys: Set<string>,
 ) => {
   const baseProps = {
     dataKey: metric.id,
@@ -83,7 +83,7 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
     }));
   }
 
-  const dateFormat = unit === "month" ? "YYYY-MM" : "YYYY-MM-DD";
+  const dateFormat = unit === "month" ? "YYYY-MM" : "YYYY-MM-DD週";
 
   return tidy(
     data,
@@ -110,9 +110,9 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
       average_rating: (data) =>
         data.review_count_change > 0
           ? Math.round(
-              (data.weighted_rating_sum / data.review_count_change) * 10
+              (data.weighted_rating_sum / data.review_count_change) * 10,
             ) / 10
           : null,
-    })
+    }),
   ).sort((a, b) => a.date.localeCompare(b.date));
 };

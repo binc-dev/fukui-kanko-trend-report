@@ -7,7 +7,10 @@ import { useChartData } from "./graph/hooks/use-chart-data";
 
 export function DownloadCSVButton({ variant }: { variant: DateRangeVariant }) {
   const { start, end, data: chartData } = useChartData(variant);
-  const { area } = useChartSettings();
+  const { area, timeUnit } = useChartSettings();
+
+  const name =
+    area === "total_daily_metrics.csv" ? "全域" : area.split("_")[2] || "不明";
 
   const handleDownload = () => {
     if (chartData.length === 0) return;
@@ -17,13 +20,21 @@ export function DownloadCSVButton({ variant }: { variant: DateRangeVariant }) {
         .map((value) => `"${value}"`)
         .join(","),
     );
-
     const csvContent = [headers, ...rows].join("\n");
 
     const blob = new Blob(["\ufeff" + csvContent], {
       type: "text/csv;charset=utf-8;",
     });
-    saveAs(blob, `data_${area}_${variant}.csv`);
+
+    const formats = {
+      month: "YYYYMM",
+      week: "YYYYMMDD[週]",
+      day: "YYYYMMDD",
+    };
+
+    const formatStr = formats[timeUnit];
+    const dateRangeStr = `${start?.format(formatStr)}-${end?.format(formatStr)}`;
+    saveAs(blob, `トレンドレポート_${name}_${dateRangeStr}.csv`);
   };
   return (
     <Button
