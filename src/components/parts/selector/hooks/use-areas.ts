@@ -12,7 +12,7 @@ export function useAreas() {
   const [areas, setAreas] = useState<Area[]>([]);
   const [selectedArea, setSelectedArea] = useState<string>(TOTAL_AREA);
   useEffect(() => {
-    fetch("/metadata.json")
+    fetch(`${import.meta.env.BASE_URL}metadata.json`)
       .then((res) => res.json())
       .then((data) => setAreas(data.areas))
       .catch((error) => {

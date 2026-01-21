@@ -6,7 +6,7 @@ export function useMetricsData(areaFilename: string) {
   const [data, setData] = useState<DataPoint[]>([]);
 
   useEffect(() => {
-    fetch(`/data/${areaFilename}`)
+    fetch(`${import.meta.env.BASE_URL}data/${areaFilename}`)
       .then((res) => res.text())
       .then((csv) => {
         Papa.parse(csv, {
@@ -18,7 +18,7 @@ export function useMetricsData(areaFilename: string) {
       .catch((error) => {
         console.error(
           "CSVデータの取得または解析中にエラーが発生しました:",
-          error
+          error,
         );
       });
   }, [areaFilename]);
