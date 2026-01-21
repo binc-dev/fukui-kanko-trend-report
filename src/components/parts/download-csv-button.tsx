@@ -14,10 +14,25 @@ export function DownloadCSVButton({ variant }: { variant: DateRangeVariant }) {
 
   const handleDownload = () => {
     if (chartData.length === 0) return;
-    const headers = Object.keys(chartData[0]).join(",");
+
+    const headerMap: Record<string, string> = {
+      date: "日付",
+      map_views: "地図検索",
+      search_views: "web検索",
+      directions: "ルート検索",
+      call_clicks: "通話",
+      website_clicks: "ウェブサイトクリック",
+      review_count_change: "レビュー投稿数",
+      average_rating: "平均評点",
+    };
+
+    const headers = Object.keys(headerMap)
+      .map((key) => headerMap[key])
+      .join(",");
+
     const rows = chartData.map((item) =>
-      Object.values(item)
-        .map((value) => `"${value}"`)
+      Object.keys(headerMap)
+        .map((key) => `"${item[key as keyof typeof item] ?? ""}"`)
         .join(","),
     );
     const csvContent = [headers, ...rows].join("\n");
