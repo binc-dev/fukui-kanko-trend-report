@@ -8,7 +8,7 @@ import { useChartData } from "./graph/hooks/use-chart-data";
 
 export function DownloadCSVButton({ variant }: { variant: DateRangeVariant }) {
   const { start, end, data: chartData } = useChartData(variant);
-  const { area, timeUnit } = useChartSettings();
+  const { area, timeUnit, isComparison } = useChartSettings();
 
   const handleDownload = () => {
     if (!chartData.length || !start || !end) return;
@@ -33,7 +33,7 @@ export function DownloadCSVButton({ variant }: { variant: DateRangeVariant }) {
     >
       <span className="flex items-center gap-1">
         <DownloadIcon size={16} />
-        <span className="hidden sm:inline">CSV</span>
+        {!isComparison && <span className="hidden sm:inline">CSV</span>}
       </span>
     </Button>
   );

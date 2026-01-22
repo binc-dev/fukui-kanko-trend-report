@@ -32,7 +32,7 @@ export function CountTrendChart({
   onToggle: (key: string) => void;
 }) {
   return (
-    <ResponsiveContainer width="100%" height={450}>
+    <ResponsiveContainer width="100%" height={500}>
       <ComposedChart data={data} margin={{ top: 12, right: 60 }}>
         <CartesianGrid strokeOpacity={0.3} vertical={false} />
         <XAxis
@@ -46,6 +46,7 @@ export function CountTrendChart({
         <Legend
           wrapperStyle={{
             width: "100%",
+            minHeight: "60px",
           }}
           content={
             <CustomLegendContent
