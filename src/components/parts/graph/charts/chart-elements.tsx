@@ -9,15 +9,12 @@ import { getDateInfo } from "../utils";
 export const CustomXAxisTick = ({ x, y, payload }: CustomXAxisTickProps) => {
   const { timeUnit } = useChartSettings();
   if (!payload?.value) return null;
-  const { formattedDate, displayText, color } = getDateInfo(
-    payload.value,
-    timeUnit,
-  );
+  const { displayText, color } = getDateInfo(payload.value, timeUnit);
 
   return (
     <g transform={`translate(${x},${y})`}>
       <text x={0} y={0} dy={16} textAnchor="middle" fill="#666" fontSize={12}>
-        {formattedDate}
+        {payload.value}
       </text>
       <text x={0} y={0} dy={32} textAnchor="middle" fill={color} fontSize={10}>
         {displayText}
@@ -39,7 +36,7 @@ export const CustomTooltipContent = ({
 
   if (filteredPayload.length === 0) return null;
 
-  const { formattedDate, displayText, color } = getDateInfo(
+  const { displayText, color } = getDateInfo(
     filteredPayload[0].payload.date,
     timeUnit,
   );
@@ -47,7 +44,7 @@ export const CustomTooltipContent = ({
   return (
     <div className="grid min-w-32 gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl">
       <div className="flex">
-        <span>{formattedDate}</span>
+        <span>{filteredPayload[0].payload.date}</span>
         <span style={{ color }} className="ml-2">
           {displayText}
         </span>
