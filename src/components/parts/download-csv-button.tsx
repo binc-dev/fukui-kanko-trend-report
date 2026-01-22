@@ -31,7 +31,7 @@ export function DownloadCSVButton({ variant }: { variant: DateRangeVariant }) {
   };
   return (
     <Button
-      className="h-9 px-3  text-black rounded disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+      className="h-9 px-3 text-black rounded disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
       variant="outline"
       onClick={handleDownload}
       disabled={!start || !end}
