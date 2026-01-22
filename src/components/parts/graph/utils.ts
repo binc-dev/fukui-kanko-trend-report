@@ -92,7 +92,7 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
       const dateStr = current.format("YYYY-MM-DD");
       const entry = sortedData[dataIndex];
 
-      if (entry && dayjs(entry.date).format("YYYY-MM-DD") === dateStr) {
+      if (entry && entry.date === dateStr) {
         filledData.push({
           ...entry,
           average_rating:
