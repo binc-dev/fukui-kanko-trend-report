@@ -42,7 +42,7 @@ export const getDateInfo = (dateStr: string, timeUnit: TimeUnit) => {
 export const getChartProps = (
   metric: ChartMetric,
   hoveredKey: string | null,
-  hiddenKeys: Set<string>
+  hiddenKeys: Set<string>,
 ) => {
   const baseProps = {
     dataKey: metric.id,
@@ -77,10 +77,43 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
   if (!data || data.length === 0) return [];
 
   if (unit === "day") {
-    return data.map((entry) => ({
-      ...entry,
-      average_rating: entry.average_rating === 0 ? null : entry.average_rating,
-    }));
+    const sortedData = [...data].sort((a, b) => a.date.localeCompare(b.date));
+
+    const start = dayjs(sortedData[0].date);
+    const end = dayjs(sortedData[sortedData.length - 1].date);
+
+    const filledData = [] as DataPoint[];
+    let current = start;
+    let dataIndex = 0;
+
+    while (current.isBefore(end) || current.isSame(end)) {
+      const dateStr = current.format("YYYY-MM-DD");
+      const entry = sortedData[dataIndex];
+
+      if (entry && dayjs(entry.date).format("YYYY-MM-DD") === dateStr) {
+        filledData.push({
+          ...entry,
+          average_rating:
+            entry.average_rating === 0 ? null : entry.average_rating,
+        });
+        dataIndex++;
+      } else {
+        filledData.push({
+          date: dateStr,
+          map_views: 0,
+          search_views: 0,
+          directions: 0,
+          call_clicks: 0,
+          website_clicks: 0,
+          review_count_change: 0,
+          average_rating: null,
+          total_reviews: 0,
+          location_count: 0,
+        });
+      }
+      current = current.add(1, "day");
+    }
+    return filledData;
   }
 
   const dateFormat = unit === "month" ? "YYYY-MM" : "YYYY-MM-DD";
@@ -110,9 +143,9 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
       average_rating: (data) =>
         data.review_count_change > 0
           ? Math.round(
-              (data.weighted_rating_sum / data.review_count_change) * 10
+              (data.weighted_rating_sum / data.review_count_change) * 10,
             ) / 10
           : null,
-    })
+    }),
   ).sort((a, b) => a.date.localeCompare(b.date));
 };
