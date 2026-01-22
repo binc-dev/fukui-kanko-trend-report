@@ -6,7 +6,7 @@ export type DataPoint = {
   call_clicks: number;
   website_clicks: number;
   total_reviews: number;
-  average_rating: number;
+  average_rating: number | null;
   review_count_change: number;
   location_count: number;
 };
