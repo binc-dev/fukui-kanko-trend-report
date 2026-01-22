@@ -3,7 +3,9 @@ import * as holidayJp from "@holiday-jp/holiday_jp";
 import { groupBy, mutate, sum, summarize, tidy } from "@tidyjs/tidy";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import { DAYS } from "./constants";
+dayjs.extend(isSameOrBefore);
 dayjs.extend(isoWeek);
 
 export const getDateInfo = (dateStr: string, timeUnit: TimeUnit) => {
@@ -86,7 +88,7 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
     let current = start;
     let dataIndex = 0;
 
-    while (current.isBefore(end) || current.isSame(end)) {
+    while (current.isSameOrBefore(end)) {
       const dateStr = current.format("YYYY-MM-DD");
       const entry = sortedData[dataIndex];
 
