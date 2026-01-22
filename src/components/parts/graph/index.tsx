@@ -10,8 +10,8 @@ import { useMetricsData } from "./hooks/use-metrics-data";
 dayjs.extend(minMax);
 
 export function Graph({ variant }: { variant: DateRangeVariant }) {
-  const { area, setAvailableRange } = useChartSettings();
-  const { data } = useMetricsData(area);
+  const { areaFilename, setAvailableRange } = useChartSettings();
+  const { data } = useMetricsData(areaFilename);
 
   const { start, end, data: chartData } = useChartData(variant);
 

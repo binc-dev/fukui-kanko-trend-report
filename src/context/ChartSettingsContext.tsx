@@ -11,8 +11,8 @@ import {
 import type { DateRange } from "react-day-picker";
 
 interface ChartSettingsContextType {
-  area: string;
-  setArea: (area: string) => void;
+  areaFilename: string;
+  setAreaFilename: (areaFilename: string) => void;
   timeUnit: TimeUnit;
   setTimeUnit: (timeUnit: TimeUnit) => void;
   isComparison: boolean;
@@ -36,7 +36,7 @@ export const ChartSettingsProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [area, setArea] = useState("total_daily_metrics.csv");
+  const [areaFilename, setAreaFilename] = useState("total_daily_metrics.csv");
   const [timeUnit, setTimeUnit] = useState<TimeUnit>("day");
   const [isComparison, setIsComparison] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -47,7 +47,7 @@ export const ChartSettingsProvider = ({
     {
       from: dayjs().subtract(3, "month").toDate(),
       to: dayjs().subtract(1, "day").toDate(),
-    }
+    },
   );
   const [availableRange, setAvailableRange] = useState<{
     min: Date | null;
@@ -60,8 +60,8 @@ export const ChartSettingsProvider = ({
   return (
     <ChartSettingsContext.Provider
       value={{
-        area,
-        setArea,
+        areaFilename,
+        setAreaFilename,
         timeUnit,
         setTimeUnit,
         isComparison,
@@ -84,7 +84,7 @@ export const useChartSettings = () => {
 
   if (context === undefined) {
     throw new Error(
-      "useChartSettings は ChartSettingsProvider の中で使用してください"
+      "useChartSettings は ChartSettingsProvider の中で使用してください",
     );
   }
 

@@ -8,7 +8,7 @@ import { useChartData } from "./graph/hooks/use-chart-data";
 
 export function DownloadCSVButton({ variant }: { variant: DateRangeVariant }) {
   const { start, end, data: chartData } = useChartData(variant);
-  const { area, timeUnit, isComparison } = useChartSettings();
+  const { areaFilename, timeUnit, isComparison } = useChartSettings();
 
   const handleDownload = () => {
     if (!chartData.length || !start || !end) return;
@@ -21,7 +21,12 @@ export function DownloadCSVButton({ variant }: { variant: DateRangeVariant }) {
     });
 
     // ファイル名の生成
-    const fileName = generateCSVFileName({ area, timeUnit, start, end });
+    const fileName = generateCSVFileName({
+      areaFilename,
+      timeUnit,
+      start,
+      end,
+    });
     saveAs(blob, fileName);
   };
   return (
