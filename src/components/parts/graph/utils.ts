@@ -14,7 +14,6 @@ export const getDateInfo = (dateStr: string, timeUnit: TimeUnit) => {
 
   if (timeUnit === "month") {
     return {
-      formattedDate: d.format("YYYY-MM"),
       displayText: "",
       color: "#666",
     };
@@ -22,7 +21,6 @@ export const getDateInfo = (dateStr: string, timeUnit: TimeUnit) => {
 
   if (timeUnit === "week") {
     return {
-      formattedDate: d.format("YYYY-MM-DD") + "週",
       displayText: ``,
       color: "#666",
     };
@@ -36,9 +34,8 @@ export const getDateInfo = (dateStr: string, timeUnit: TimeUnit) => {
   const isSaturday = dayOfWeek === "土";
 
   const color = isWeekendOrHoliday ? "red" : isSaturday ? "blue" : "#666";
-  const formattedDate = d.format("YYYY-MM-DD");
 
-  return { formattedDate, displayText, color };
+  return { displayText, color };
 };
 
 export const getChartProps = (
@@ -118,7 +115,7 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
     return filledData;
   }
 
-  const dateFormat = unit === "month" ? "YYYY-MM" : "YYYY-MM-DD";
+  const dateFormat = unit === "month" ? "YYYY-MM" : "YYYY-MM-DD週";
 
   return tidy(
     data,

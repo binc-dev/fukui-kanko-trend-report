@@ -5,16 +5,15 @@ import minMax from "dayjs/plugin/minMax";
 import { useEffect, useState } from "react";
 import { CountTrendChart } from "./charts/count-trend-chart";
 import { ReviewTrendChart } from "./charts/review-trend-chart";
+import { useChartData } from "./hooks/use-chart-data";
 import { useMetricsData } from "./hooks/use-metrics-data";
-import { aggregateData } from "./utils";
 dayjs.extend(minMax);
 
 export function Graph({ variant }: { variant: DateRangeVariant }) {
-  const { area, timeUnit, dateRange, comparisonRange, setAvailableRange } =
-    useChartSettings();
-  const { data } = useMetricsData(area);
+  const { areaFilename, setAvailableRange } = useChartSettings();
+  const { data } = useMetricsData(areaFilename);
 
-  const currentRange = variant === "primary" ? dateRange : comparisonRange;
+  const { start, end, data: chartData } = useChartData(variant);
 
   useEffect(() => {
     if (!data?.length) return;
@@ -29,26 +28,13 @@ export function Graph({ variant }: { variant: DateRangeVariant }) {
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set());
 
-  if (!data || !currentRange?.from || !currentRange?.to) {
+  if (!data || !start || !end) {
     return (
       <div className="w-full flex items-center justify-center h-64 text-gray-500">
         <p className="text-lg">表示したい期間を設定してください。</p>
       </div>
     );
   }
-
-  const start = dayjs(currentRange.from).startOf("day");
-  const end = dayjs(currentRange.to).endOf("day");
-
-  const filteredData = data.filter((item) => {
-    const itemDate = dayjs(item.date);
-    return (
-      (itemDate.isAfter(start) || itemDate.isSame(start)) &&
-      (itemDate.isBefore(end) || itemDate.isSame(end))
-    );
-  });
-
-  const chartData = aggregateData(filteredData, timeUnit);
 
   // 凡例の項目を表示・非表示に切り替える関数
   const toggleKey = (key: string) => {
@@ -67,7 +53,7 @@ export function Graph({ variant }: { variant: DateRangeVariant }) {
   };
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col">
       <h2 className="w-full h-10 text-xl col-span-2 mt-8 pt-2 border-t-2 border-gray-100 text-center font-bold">
         回数推移
       </h2>
@@ -79,7 +65,7 @@ export function Graph({ variant }: { variant: DateRangeVariant }) {
         onToggle={toggleKey}
       />
 
-      <h2 className="w-full h-10 text-xl col-span-2 mt-6 pt-2 border-t-2 border-gray-100 text-center font-bold">
+      <h2 className="w-full h-10 text-xl col-span-2 pt-2 border-t-2 border-gray-100 text-center font-bold">
         レビュー推移
       </h2>
       <ReviewTrendChart

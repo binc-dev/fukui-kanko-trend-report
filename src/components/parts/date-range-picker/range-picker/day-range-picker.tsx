@@ -39,7 +39,7 @@ export function DayRangePicker({ variant }: { variant: DateRangeVariant }) {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-48 justify-between font-normal border-black"
+              className="lg:w-48 justify-between font-normal border-black"
             >
               {currentRange?.from ? (
                 dayjs(currentRange.from).format("YYYY/MM/DD")
@@ -88,7 +88,7 @@ export function DayRangePicker({ variant }: { variant: DateRangeVariant }) {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-48 justify-between font-normal border-black"
+              className="lg:w-48 justify-between font-normal border-black"
               disabled={!currentRange?.from}
             >
               {currentRange?.to ? (
