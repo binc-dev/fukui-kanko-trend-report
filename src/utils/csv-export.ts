@@ -4,7 +4,7 @@ import type { Dayjs } from "dayjs";
 export const HEADER_MAP = {
   date: "日付",
   map_views: "地図検索",
-  search_views: "web検索",
+  search_views: "Web検索",
   directions: "ルート検索",
   call_clicks: "通話",
   website_clicks: "ウェブサイトクリック",
