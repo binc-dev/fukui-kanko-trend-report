@@ -13,8 +13,7 @@ export default defineConfig({
     }),
     tailwindcss(),
   ],
-  base:
-    process.env.NODE_ENV === "production" ? "/fukui-kanko-trend-report/" : "/",
+  base: process.env.PAGES ? "/fukui-kanko-trend-report/" : "./",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
