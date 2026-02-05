@@ -114,12 +114,12 @@ export const CustomLegendContent = ({
   ];
 
   const reviewOrder = [
-    "average_rating",
     "review_count_by_rating_5",
     "review_count_by_rating_4",
     "review_count_by_rating_3",
     "review_count_by_rating_2",
     "review_count_by_rating_1",
+    "average_rating",
   ];
 
   const desiredOrder = chartType === "count" ? countOrder : reviewOrder;
@@ -160,7 +160,11 @@ export const CustomLegendContent = ({
           >
             <div
               className={`h-3 w-3 shrink-0 ${
-                entry.dataKey === "review_count_change"
+                entry.dataKey === "review_count_by_rating_5" ||
+                entry.dataKey === "review_count_by_rating_4" ||
+                entry.dataKey === "review_count_by_rating_3" ||
+                entry.dataKey === "review_count_by_rating_2" ||
+                entry.dataKey === "review_count_by_rating_1"
                   ? "rounded-[2px]"
                   : "rounded-full"
               }`}
