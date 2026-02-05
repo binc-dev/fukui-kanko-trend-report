@@ -8,7 +8,11 @@ export type DataPoint = {
   total_reviews: number;
   average_rating: number | null;
   review_count_change: number;
-  location_count: number;
+  review_count_by_rating_1: number;
+  review_count_by_rating_2: number;
+  review_count_by_rating_3: number;
+  review_count_by_rating_4: number;
+  review_count_by_rating_5: number;
 };
 
 export type ChartDataItem = {
@@ -18,8 +22,13 @@ export type ChartDataItem = {
   directions: number;
   call_clicks: number;
   website_clicks: number;
-  review_count_change: number;
   average_rating: number | null;
+  review_count_change: number;
+  review_count_by_rating_1: number;
+  review_count_by_rating_2: number;
+  review_count_by_rating_3: number;
+  review_count_by_rating_4: number;
+  review_count_by_rating_5: number;
 };
 
 export type ChartMetric = {

@@ -108,7 +108,11 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
           review_count_change: 0,
           average_rating: null,
           total_reviews: 0,
-          location_count: 0,
+          review_count_by_rating_1: 0,
+          review_count_by_rating_2: 0,
+          review_count_by_rating_3: 0,
+          review_count_by_rating_4: 0,
+          review_count_by_rating_5: 0,
         });
       }
       current = current.add(1, "day");
@@ -136,6 +140,11 @@ export const aggregateData = (data: DataPoint[], unit: TimeUnit) => {
         call_clicks: sum("call_clicks"),
         website_clicks: sum("website_clicks"),
         review_count_change: sum("review_count_change"),
+        review_count_by_rating_1: sum("review_count_by_rating_1"),
+        review_count_by_rating_2: sum("review_count_by_rating_2"),
+        review_count_by_rating_3: sum("review_count_by_rating_3"),
+        review_count_by_rating_4: sum("review_count_by_rating_4"),
+        review_count_by_rating_5: sum("review_count_by_rating_5"),
         weighted_rating_sum: sum("weighted_rating"),
       }),
     ]),
