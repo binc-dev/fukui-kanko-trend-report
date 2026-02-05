@@ -41,6 +41,24 @@ export const CustomTooltipContent = ({
     timeUnit,
   );
 
+  const reviewOrder = [
+    "review_count_by_rating_5",
+    "review_count_by_rating_4",
+    "review_count_by_rating_3",
+    "review_count_by_rating_2",
+    "review_count_by_rating_1",
+    "average_rating",
+  ];
+
+  const sortedPayload =
+    chartType === "count"
+      ? filteredPayload.slice().sort((a, b) => b.value - a.value)
+      : filteredPayload.slice().sort((a, b) => {
+          const indexA = reviewOrder.indexOf(a.dataKey);
+          const indexB = reviewOrder.indexOf(b.dataKey);
+          return indexA - indexB;
+        });
+
   return (
     <div className="grid min-w-32 gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl">
       <div className="flex">
@@ -50,17 +68,17 @@ export const CustomTooltipContent = ({
         </span>
       </div>
       <div className="grid gap-1.5">
-        {[
-          ...(chartType === "count"
-            ? filteredPayload.slice().sort((a, b) => b.value - a.value)
-            : filteredPayload),
-        ].map((item) => (
+        {sortedPayload.map((item) => (
           <div key={item.dataKey} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-2">
                 <div
                   className={`h-2 w-2 shrink-0 ${
-                    item.dataKey === "review_count_change"
+                    item.dataKey === "review_count_by_rating_5" ||
+                    item.dataKey === "review_count_by_rating_4" ||
+                    item.dataKey === "review_count_by_rating_3" ||
+                    item.dataKey === "review_count_by_rating_2" ||
+                    item.dataKey === "review_count_by_rating_1"
                       ? "rounded-[2px]"
                       : "rounded-full"
                   }`}
