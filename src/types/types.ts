@@ -27,6 +27,7 @@ export type ChartMetric = {
   name: string;
   color: string;
   type?: "line" | "bar";
+  stackId?: string;
 };
 
 export type TimeUnit = "day" | "week" | "month";

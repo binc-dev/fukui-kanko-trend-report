@@ -55,6 +55,7 @@ export const getChartProps = (
   if (metric.type === "bar") {
     return {
       ...baseProps,
+      stackId: metric.stackId,
     };
   }
 
