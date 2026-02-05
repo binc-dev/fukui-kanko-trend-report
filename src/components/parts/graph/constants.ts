@@ -10,7 +10,7 @@ export const REVIEW_TREND_METRICS = [
   {
     id: "review_count_by_rating_1",
     name: "評点1",
-    color: "#dbeafe",
+    color: "#cbd5e1",
     type: "bar",
     stackId: "reviews",
   },
