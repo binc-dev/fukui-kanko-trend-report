@@ -103,14 +103,26 @@ export const CustomLegendContent = ({
   onHover,
   onLeave,
   onToggle,
+  chartType,
 }: CustomLegendContentProps) => {
-  const desiredOrder = [
+  const countOrder = [
     "map_views",
     "search_views",
     "directions",
     "call_clicks",
     "website_clicks",
   ];
+
+  const reviewOrder = [
+    "average_rating",
+    "review_count_by_rating_5",
+    "review_count_by_rating_4",
+    "review_count_by_rating_3",
+    "review_count_by_rating_2",
+    "review_count_by_rating_1",
+  ];
+
+  const desiredOrder = chartType === "count" ? countOrder : reviewOrder;
 
   // payloadをdesiredOrderの順序でソート
   const sortedPayload = payload
