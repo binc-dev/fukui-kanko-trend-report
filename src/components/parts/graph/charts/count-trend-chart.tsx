@@ -55,6 +55,7 @@ export function CountTrendChart({
               onHover={onHover}
               onLeave={() => onHover(null)}
               onToggle={onToggle}
+              chartType="count"
             />
           }
         />

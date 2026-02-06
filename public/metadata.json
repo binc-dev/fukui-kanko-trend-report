@@ -11,167 +11,62 @@
     {
       "area_id": "area001",
       "area_name": "池田町",
-      "location_count": 3,
-      "filename": "area_area001_池田町_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_池田町_area001_daily_metrics.csv"
     },
     {
       "area_id": "area002",
       "area_name": "勝山市",
-      "location_count": 3,
-      "filename": "area_area002_勝山市_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_勝山市_area002_daily_metrics.csv"
     },
     {
       "area_id": "area003",
       "area_name": "大野市",
-      "location_count": 3,
-      "filename": "area_area003_大野市_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_大野市_area003_daily_metrics.csv"
     },
     {
       "area_id": "area004",
       "area_name": "敦賀市",
-      "location_count": 3,
-      "filename": "area_area004_敦賀市_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_敦賀市_area004_daily_metrics.csv"
     },
     {
       "area_id": "area005",
       "area_name": "高浜町",
-      "location_count": 3,
-      "filename": "area_area005_高浜町_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_高浜町_area005_daily_metrics.csv"
     },
     {
       "area_id": "area006",
       "area_name": "おおい町",
-      "location_count": 3,
-      "filename": "area_area006_おおい町_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_おおい町_area006_daily_metrics.csv"
     },
     {
       "area_id": "area007",
       "area_name": "越前市",
-      "location_count": 3,
-      "filename": "area_area007_越前市_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_越前市_area007_daily_metrics.csv"
     },
     {
       "area_id": "area008",
       "area_name": "南越前町",
-      "location_count": 3,
-      "filename": "area_area008_南越前町_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_南越前町_area008_daily_metrics.csv"
     },
     {
       "area_id": "area009",
       "area_name": "福井市",
-      "location_count": 3,
-      "filename": "area_area009_福井市_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_福井市_area009_daily_metrics.csv"
     },
     {
       "area_id": "area010",
       "area_name": "小浜市",
-      "location_count": 3,
-      "filename": "area_area010_小浜市_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_小浜市_area010_daily_metrics.csv"
     },
     {
       "area_id": "area011",
       "area_name": "永平寺町",
-      "location_count": 3,
-      "filename": "area_area011_永平寺町_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_永平寺町_area011_daily_metrics.csv"
     },
     {
       "area_id": "area012",
       "area_name": "若狭町",
-      "location_count": 3,
-      "filename": "area_area012_若狭町_daily_metrics.csv",
-      "rows": 365
+      "filename": "area_若狭町_area012_daily_metrics.csv"
     }
-  ],
-  "files": [
-    {
-      "name": "total_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 12800,
-      "description": "全エリア合算の日次データ"
-    },
-    {
-      "name": "area_area001_池田町_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 18800,
-      "description": "池田町の日次データ"
-    },
-    {
-      "name": "area_area002_勝山市_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 18800,
-      "description": "勝山市の日次データ"
-    },
-    {
-      "name": "area_area003_大野市_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 12000,
-      "description": "大野市の日次データ"
-    },
-    {
-      "name": "area_area004_敦賀市_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 18800,
-      "description": "敦賀市の日次データ"
-    },
-    {
-      "name": "area_area005_高浜町_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 18800,
-      "description": "高浜町の日次データ"
-    },
-    {
-      "name": "area_area006_おおい町_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 12000,
-      "description": "おおい町の日次データ"
-    },
-    {
-      "name": "area_area007_越前市_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 12000,
-      "description": "越前市の日次データ"
-    },
-    {
-      "name": "area_area008_南越前町_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 18800,
-      "description": "南越前町の日次データ"
-    },
-    {
-      "name": "area_area009_福井市_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 18800,
-      "description": "福井市の日次データ"
-    },
-    {
-      "name": "area_area010_小浜市_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 12000,
-      "description": "小浜市の日次データ"
-    },
-    {
-      "name": "area_area011_永平寺町_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 18800,
-      "description": "永平寺町の日次データ"
-    },
-    {
-      "name": "area_area012_若狭町_daily_metrics.csv",
-      "rows": 365,
-      "size_bytes": 12000,
-      "description": "若狭町の日次データ"
-    }
-  ],
-  "version": "1.0.0"
+  ]
 }

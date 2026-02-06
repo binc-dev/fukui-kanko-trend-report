@@ -76,6 +76,7 @@ export function ReviewTrendChart({
               onHover={onHover}
               onLeave={() => onHover(null)}
               onToggle={onToggle}
+              chartType="review"
             />
           }
         />

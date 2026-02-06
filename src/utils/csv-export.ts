@@ -9,6 +9,11 @@ export const HEADER_MAP = {
   call_clicks: "通話",
   website_clicks: "ウェブサイトクリック",
   review_count_change: "レビュー投稿数",
+  review_count_by_rating_5: "星5_レビュー数",
+  review_count_by_rating_4: "星4_レビュー数",
+  review_count_by_rating_3: "星3_レビュー数",
+  review_count_by_rating_2: "星2_レビュー数",
+  review_count_by_rating_1: "星1_レビュー数",
   average_rating: "平均評点",
 } as const;
 
@@ -43,7 +48,7 @@ export function generateCSVFileName({
   const name =
     areaFilename === "total_daily_metrics.csv"
       ? "全域"
-      : areaFilename.split("_")[2] || "不明";
+      : areaFilename.split("_")[1] || "不明";
 
   const formatStr = DATE_FORMATS[timeUnit];
   const dateRangeStr = `${start.format(formatStr)}-${end.format(formatStr)}`;

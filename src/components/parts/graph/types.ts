@@ -48,4 +48,5 @@ export type CustomLegendContentProps = {
   onHover: (key: string) => void;
   onLeave: () => void;
   onToggle: (key: string) => void;
+  chartType: "count" | "review";
 };
