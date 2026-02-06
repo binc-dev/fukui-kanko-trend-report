@@ -27,7 +27,6 @@ export const CustomTooltipContent = ({
   active,
   payload,
   chartType,
-  hiddenKeys,
 }: CustomTooltipContentProps) => {
   const { timeUnit } = useChartSettings();
   if (!active || !payload?.length) return null;
@@ -74,9 +73,17 @@ export const CustomTooltipContent = ({
             ⚠️ レビュー投稿が0件です。
           </span>
         ) : (
-          sortedPayload.map((item) => (
-            <div key={item.dataKey} className="flex flex-col gap-1.5">
-              <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-1.5">
+            {chartType === "review" && (
+              <span className="text-muted-foreground">
+                {`レビュー投稿総数:${sortedPayload[0].payload.review_count_change}`}
+              </span>
+            )}
+            {sortedPayload.map((item) => (
+              <div
+                key={item.dataKey}
+                className="flex items-center justify-between gap-4"
+              >
                 <div className="flex items-center gap-2">
                   <div
                     className={`h-2 w-2 shrink-0 ${
@@ -96,8 +103,8 @@ export const CustomTooltipContent = ({
                   {item.value.toLocaleString()}
                 </span>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
         )}
       </div>
     </div>
