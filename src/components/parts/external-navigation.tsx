@@ -22,7 +22,7 @@ export function ExternalNavigation() {
           <PopoverContent className="flex w-fit flex-col items-center gap-y-4">
             <a
               className="flex items-center gap-x-2 underline hover:font-bold"
-              href="/"
+              href="https://github.com/code4fukui/fukui-kanko-trend-data"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -62,7 +62,7 @@ export function ExternalNavigation() {
           <PopoverContent className="flex w-40 flex-col gap-y-4">
             <a
               className="flex items-center gap-x-2 underline hover:font-bold"
-              href="/"
+              href="https://github.com/code4fukui/fukui-kanko-trend-data"
               target="_blank"
               rel="noopener noreferrer"
             >
