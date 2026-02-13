@@ -27,7 +27,6 @@ export const CustomTooltipContent = ({
   active,
   payload,
   chartType,
-  hiddenKeys,
 }: CustomTooltipContentProps) => {
   const { timeUnit } = useChartSettings();
   if (!active || !payload?.length) return null;
@@ -41,6 +40,24 @@ export const CustomTooltipContent = ({
     timeUnit,
   );
 
+  const reviewOrder = [
+    "review_count_by_rating_5",
+    "review_count_by_rating_4",
+    "review_count_by_rating_3",
+    "review_count_by_rating_2",
+    "review_count_by_rating_1",
+    "average_rating",
+  ];
+
+  const sortedPayload =
+    chartType === "count"
+      ? filteredPayload.slice().sort((a, b) => b.value - a.value)
+      : filteredPayload.slice().sort((a, b) => {
+          const indexA = reviewOrder.indexOf(a.dataKey);
+          const indexB = reviewOrder.indexOf(b.dataKey);
+          return indexA - indexB;
+        });
+
   return (
     <div className="grid min-w-32 gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl">
       <div className="flex">
@@ -50,47 +67,45 @@ export const CustomTooltipContent = ({
         </span>
       </div>
       <div className="grid gap-1.5">
-        {[
-          ...(chartType === "count"
-            ? filteredPayload.slice().sort((a, b) => b.value - a.value)
-            : filteredPayload),
-        ].map((item) => (
-          <div key={item.dataKey} className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                <div
-                  className={`h-2 w-2 shrink-0 ${
-                    item.dataKey === "review_count_change"
-                      ? "rounded-[2px]"
-                      : "rounded-full"
-                  }`}
-                  style={{ backgroundColor: item.color }}
-                />
-                <span className="text-muted-foreground">{`${item.name}:`}</span>
-              </div>
-              <span className="font-mono font-medium tabular-nums text-foreground">
-                {item.value.toLocaleString()}
+        {chartType === "review" &&
+        sortedPayload[0].payload.review_count_change === 0 ? (
+          <span className="text-muted-foreground">
+            ⚠️ レビュー投稿が0件です。
+          </span>
+        ) : (
+          <div className="flex flex-col gap-1.5">
+            {chartType === "review" && (
+              <span className="text-muted-foreground">
+                {`レビュー投稿総数:${sortedPayload[0].payload.review_count_change}`}
               </span>
-            </div>
-
-            {chartType === "review" &&
-              item.payload.average_rating === null &&
-              !hiddenKeys?.has("average_rating") && (
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="h-2 w-2 shrink-0 rounded-full"
-                      style={{ backgroundColor: "#FF7F0E" }}
-                    />
-                    <span className="text-muted-foreground">平均評点:</span>
-                  </div>
-                  <span className="font-mono font-medium tabular-nums text-foreground">
-                    評点なし
-                  </span>
+            )}
+            {sortedPayload.map((item) => (
+              <div
+                key={item.dataKey}
+                className="flex items-center justify-between gap-4"
+              >
+                <div className="flex items-center gap-2">
+                  <div
+                    className={`h-2 w-2 shrink-0 ${
+                      item.dataKey === "review_count_by_rating_5" ||
+                      item.dataKey === "review_count_by_rating_4" ||
+                      item.dataKey === "review_count_by_rating_3" ||
+                      item.dataKey === "review_count_by_rating_2" ||
+                      item.dataKey === "review_count_by_rating_1"
+                        ? "rounded-[2px]"
+                        : "rounded-full"
+                    }`}
+                    style={{ backgroundColor: item.color }}
+                  />
+                  <span className="text-muted-foreground">{`${item.name}:`}</span>
                 </div>
-              )}
+                <span className="font-mono font-medium tabular-nums text-foreground">
+                  {item.value.toLocaleString()}
+                </span>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
@@ -103,14 +118,26 @@ export const CustomLegendContent = ({
   onHover,
   onLeave,
   onToggle,
+  chartType,
 }: CustomLegendContentProps) => {
-  const desiredOrder = [
+  const countOrder = [
     "map_views",
     "search_views",
     "directions",
     "call_clicks",
     "website_clicks",
   ];
+
+  const reviewOrder = [
+    "review_count_by_rating_5",
+    "review_count_by_rating_4",
+    "review_count_by_rating_3",
+    "review_count_by_rating_2",
+    "review_count_by_rating_1",
+    "average_rating",
+  ];
+
+  const desiredOrder = chartType === "count" ? countOrder : reviewOrder;
 
   // payloadをdesiredOrderの順序でソート
   const sortedPayload = payload
@@ -148,7 +175,11 @@ export const CustomLegendContent = ({
           >
             <div
               className={`h-3 w-3 shrink-0 ${
-                entry.dataKey === "review_count_change"
+                entry.dataKey === "review_count_by_rating_5" ||
+                entry.dataKey === "review_count_by_rating_4" ||
+                entry.dataKey === "review_count_by_rating_3" ||
+                entry.dataKey === "review_count_by_rating_2" ||
+                entry.dataKey === "review_count_by_rating_1"
                   ? "rounded-[2px]"
                   : "rounded-full"
               }`}
