@@ -35,20 +35,22 @@ export function generateCSVContent(data: ChartDataItem[]): string {
 }
 
 export function generateCSVFileName({
-  areaFilename,
+  areaFilenames,
+  selectedAreaId,
   timeUnit,
   start,
   end,
 }: {
-  areaFilename: string;
+  areaFilenames: Record<number, string>;
+  selectedAreaId: string;
   timeUnit: TimeUnit;
   start: Dayjs;
   end: Dayjs;
 }): string {
   const name =
-    areaFilename === "total_daily_metrics.csv"
+    selectedAreaId === "total"
       ? "全域"
-      : areaFilename.split("_")[1] || "不明";
+      : Object.values(areaFilenames)[0]?.split("_")[1] || "不明";
 
   const formatStr = DATE_FORMATS[timeUnit];
   const dateRangeStr = `${start.format(formatStr)}-${end.format(formatStr)}`;
