@@ -1,8 +1,7 @@
-import { useChartSettings } from "@/context/ChartSettingsContext";
 import type { DateRangeVariant } from "@/types/types";
 import dayjs from "dayjs";
 import minMax from "dayjs/plugin/minMax";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CountTrendChart } from "./charts/count-trend-chart";
 import { ReviewTrendChart } from "./charts/review-trend-chart";
 import { useChartData } from "./hooks/use-chart-data";
@@ -10,19 +9,9 @@ import { useMetricsData } from "./hooks/use-metrics-data";
 dayjs.extend(minMax);
 
 export function Graph({ variant }: { variant: DateRangeVariant }) {
-  const { areaFilename, setAvailableRange } = useChartSettings();
-  const { data } = useMetricsData(areaFilename);
+  const { data } = useMetricsData();
 
   const { start, end, data: chartData } = useChartData(variant);
-
-  useEffect(() => {
-    if (!data?.length) return;
-
-    const minDate = dayjs.min(data.map((d) => dayjs(d.date)));
-    if (minDate) {
-      setAvailableRange((prev) => ({ ...prev, min: minDate.toDate() }));
-    }
-  }, [data, setAvailableRange]);
 
   const [countHoveredKey, setCountHoveredKey] = useState<string | null>(null);
   const [reviewHoveredKey, setReviewHoveredKey] = useState<string | null>(null);

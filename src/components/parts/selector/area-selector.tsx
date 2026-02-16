@@ -12,19 +12,19 @@ import {
 import { useChartSettings } from "@/context/ChartSettingsContext";
 
 export function AreaSelector() {
-  const { areaFilename, setAreaFilename } = useChartSettings();
+  const { selectedAreaId, setSelectedAreaId } = useChartSettings();
   const { areas } = useAreas();
   return (
     <div className="flex flex-row items-center gap-2">
       <p>エリア</p>
-      <Select value={areaFilename} onValueChange={setAreaFilename}>
+      <Select value={selectedAreaId} onValueChange={setSelectedAreaId}>
         <SelectTrigger className="w-30 bg-white text-black border-black hover:bg-gray-100">
           <SelectValue placeholder="エリアを選択" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value={TOTAL_AREA}>全域</SelectItem>
           {areas.map((area) => (
-            <SelectItem key={area.area_id} value={area.filename}>
+            <SelectItem key={area.area_id} value={area.area_id}>
               {area.area_name}
             </SelectItem>
           ))}
