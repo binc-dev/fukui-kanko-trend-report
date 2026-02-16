@@ -5,9 +5,8 @@ import { aggregateData } from "../utils";
 import { useMetricsData } from "./use-metrics-data";
 
 export function useChartData(variant: DateRangeVariant) {
-  const { areaFilename, timeUnit, dateRange, comparisonRange } =
-    useChartSettings();
-  const { data } = useMetricsData(areaFilename);
+  const { timeUnit, dateRange, comparisonRange } = useChartSettings();
+  const { data } = useMetricsData();
 
   const currentRange = variant === "primary" ? dateRange : comparisonRange;
 

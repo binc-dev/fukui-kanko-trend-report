@@ -11,8 +11,10 @@ import {
 import type { DateRange } from "react-day-picker";
 
 interface ChartSettingsContextType {
-  areaFilename: string;
-  setAreaFilename: (areaFilename: string) => void;
+  selectedAreaId: string;
+  setSelectedAreaId: (id: string) => void;
+  areaFilenames: Record<number, string>;
+  setAreaFilenames: (filenames: Record<number, string>) => void;
   timeUnit: TimeUnit;
   setTimeUnit: (timeUnit: TimeUnit) => void;
   isComparison: boolean;
@@ -36,7 +38,10 @@ export const ChartSettingsProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [areaFilename, setAreaFilename] = useState("total_daily_metrics.csv");
+  const [selectedAreaId, setSelectedAreaId] = useState<string>("total");
+  const [areaFilenames, setAreaFilenames] = useState<Record<number, string>>(
+    {},
+  );
   const [timeUnit, setTimeUnit] = useState<TimeUnit>("day");
   const [isComparison, setIsComparison] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -53,15 +58,17 @@ export const ChartSettingsProvider = ({
     min: Date | null;
     max: Date | null;
   }>({
-    min: null,
+    min: dayjs("2024-01-01").toDate(),
     max: dayjs().subtract(1, "day").toDate(),
   });
 
   return (
     <ChartSettingsContext.Provider
       value={{
-        areaFilename,
-        setAreaFilename,
+        selectedAreaId,
+        setSelectedAreaId,
+        areaFilenames,
+        setAreaFilenames,
         timeUnit,
         setTimeUnit,
         isComparison,

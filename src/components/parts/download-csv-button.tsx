@@ -8,7 +8,8 @@ import { useChartData } from "./graph/hooks/use-chart-data";
 
 export function DownloadCSVButton({ variant }: { variant: DateRangeVariant }) {
   const { start, end, data: chartData } = useChartData(variant);
-  const { areaFilename, timeUnit, isComparison } = useChartSettings();
+  const { areaFilenames, selectedAreaId, timeUnit, isComparison } =
+    useChartSettings();
 
   const handleDownload = () => {
     if (!chartData.length || !start || !end) return;
@@ -22,7 +23,8 @@ export function DownloadCSVButton({ variant }: { variant: DateRangeVariant }) {
 
     // ファイル名の生成
     const fileName = generateCSVFileName({
-      areaFilename,
+      areaFilenames,
+      selectedAreaId,
       timeUnit,
       start,
       end,

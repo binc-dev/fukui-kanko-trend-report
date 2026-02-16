@@ -1,0 +1,41 @@
+name: Update Submodule
+
+on:
+  # 手動実行
+  workflow_dispatch:
+  # 定期実行
+  schedule:
+    # UTCで実行されているのでJST AM3時過ぎに実行される
+    - cron: "00 18 * * *"
+
+jobs:
+  # サブモジュールの更新
+  update:
+    if: github.repository == 'code4fukui/fukui-kanko-trend-report' && github.ref == 'refs/heads/main'
+    name: Update Submodules
+    runs-on: ubuntu-latest
+    env:
+      TZ: "Asia/Tokyo"
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+
+      - name: Update submodules
+        run: |
+          git submodule update --remote --init --force --depth 1 --recursive
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+
+          if [ -n "$(git status --porcelain)" ]; then
+            git diff
+            git add .
+            git commit -m "🤖 Update submodules at $(date "+DATE: %Y-%m-%d TIME: %H:%M:%S")"
+            git pull --rebase origin main
+            git push origin main
+          else
+            echo "already updated."
+          fi
