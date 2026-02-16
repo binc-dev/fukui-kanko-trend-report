@@ -5,8 +5,8 @@ on:
   workflow_dispatch:
   # 定期実行
   schedule:
-    # UTCで実行されているのでJST AM1時30分過ぎに実行される
-    - cron: "30 16 * * *"
+    # UTCで実行されているのでJST AM3時過ぎに実行される
+    - cron: "00 18 * * *"
 
 jobs:
   # サブモジュールの更新
