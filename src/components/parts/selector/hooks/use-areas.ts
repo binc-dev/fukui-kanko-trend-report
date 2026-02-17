@@ -19,13 +19,28 @@ const TOTAL_FILENAME = "total_daily_metrics.csv";
 
 export function useAreas() {
   const [areas, setAreas] = useState<AreaMetadata[]>([]);
-  const { dateRange, selectedAreaId, setAreaFilenames } = useChartSettings();
+  const {
+    dateRange,
+    comparisonRange,
+    isComparison,
+    selectedAreaId,
+    setAreaFilenames,
+  } = useChartSettings();
 
   const targetYears = (() => {
-    if (!dateRange?.from || !dateRange?.to) return [];
-    const start = dayjs(dateRange.from).year();
-    const end = dayjs(dateRange.to).year();
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    const years = new Set<number>();
+
+    const ranges = [dateRange, ...(isComparison ? [comparisonRange] : [])];
+
+    ranges.forEach((range) => {
+      if (range?.from && range?.to) {
+        const start = dayjs(range.from).year();
+        const end = dayjs(range.to).year();
+        for (let year = start; year <= end; year++) years.add(year);
+      }
+    });
+
+    return Array.from(years).sort((a, b) => a - b);
   })();
 
   useEffect(() => {
