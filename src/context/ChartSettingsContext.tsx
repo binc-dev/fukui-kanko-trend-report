@@ -45,13 +45,13 @@ export const ChartSettingsProvider = ({
   const [timeUnit, setTimeUnit] = useState<TimeUnit>("day");
   const [isComparison, setIsComparison] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: dayjs().subtract(3, "month").toDate(),
-    to: dayjs().subtract(1, "day").toDate(),
+    from: dayjs().subtract(5, "day").subtract(3, "month").toDate(),
+    to: dayjs().subtract(5, "day").toDate(),
   });
   const [comparisonRange, setComparisonRange] = useState<DateRange | undefined>(
     {
-      from: dayjs().subtract(3, "month").toDate(),
-      to: dayjs().subtract(1, "day").toDate(),
+      from: dayjs().subtract(5, "day").subtract(3, "month").toDate(),
+      to: dayjs().subtract(5, "day").toDate(),
     },
   );
   const [availableRange, setAvailableRange] = useState<{
@@ -59,7 +59,7 @@ export const ChartSettingsProvider = ({
     max: Date | null;
   }>({
     min: dayjs("2024-01-01").toDate(),
-    max: dayjs().subtract(1, "day").toDate(),
+    max: dayjs().subtract(5, "day").toDate(),
   });
 
   return (
